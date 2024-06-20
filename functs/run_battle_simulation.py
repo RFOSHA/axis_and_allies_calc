@@ -1,4 +1,4 @@
-from functions import simulate_battle
+from functs.simulate_battle import simulate_battle
 
 # Function to run the full battle simulation until one side has no units left
 def run_battle_simulation(attacking_units, defending_units):

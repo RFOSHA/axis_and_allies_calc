@@ -1,4 +1,4 @@
-from functions import remove_hits
+from functs.remove_hits import remove_hits
 import json
 import random
 
