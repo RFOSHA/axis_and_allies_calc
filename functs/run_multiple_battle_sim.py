@@ -1,4 +1,4 @@
-from functions import run_battle_simulation
+from functs.run_battle_simulation import run_battle_simulation
 from collections import defaultdict
 
 # Function to run multiple battle simulations and capture remaining units
