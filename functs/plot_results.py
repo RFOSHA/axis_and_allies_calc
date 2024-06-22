@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import os
 from collections import defaultdict
 
+def format_key(key):
+    return ', '.join([f"{unit} {num}" for unit, num in key])
 
 def plot_results(units_count, title, filename):
     units_dict = defaultdict(int)
@@ -13,7 +15,7 @@ def plot_results(units_count, title, filename):
     values = []
 
     for units, count in units_dict.items():
-        labels.append(dict(units))
+        labels.append(format_key(units))
         values.append(count)
 
     plt.figure(figsize=(10, 6))

@@ -18,7 +18,7 @@
                 <h2>Attacker Remaining Units After Each Win</h2>
                 <ul class="list-group">
                 {% for units, count in attacker_remaining_units_count.items() %}
-                    <li class="list-group-item">{{ units }}: {{ count }}</li>
+                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>
                 {% endfor %}
                 </ul>
                 <img src="{{ attacker_plot_path }}" alt="Attacker Remaining Units Distribution" class="img-fluid mt-3">
@@ -27,7 +27,7 @@
                 <h2>Defender Remaining Units After Each Win</h2>
                 <ul class="list-group">
                 {% for units, count in defender_remaining_units_count.items() %}
-                    <li class="list-group-item">{{ units }}: {{ count }}</li>
+                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>
                 {% endfor %}
                 </ul>
                 <img src="{{ defender_plot_path }}" alt="Defender Remaining Units Distribution" class="img-fluid mt-3">
@@ -35,7 +35,12 @@
         </div>
 
         <div class="text-center mt-4">
-            <a href="/" class="btn btn-primary">Simulate Another Battle</a>
+            <form action="/" method="get">
+                {% for key, value in form_data.items() %}
+                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Simulate Another Battle</button>
+            </form>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

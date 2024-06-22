@@ -12,4 +12,5 @@ templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 @router.get("/", response_class=HTMLResponse)
 async def read_form(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "units": units})
+    form_data = dict(request.query_params)
+    return templates.TemplateResponse("index.html", {"request": request, "units": units, "form_data": form_data})
