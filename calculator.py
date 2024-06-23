@@ -2,13 +2,8 @@ from fastapi import FastAPI, Request, Form, APIRouter
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from collections import defaultdict
-import random
-import matplotlib.pyplot as plt
-import os
 import json
-from functs.run_multiple_battle_sim import run_multiple_battle_sims
-from functs.plot_results import plot_results
+from starlette.middleware.sessions import SessionMiddleware
 from routers import home, simulate
 
 # Define the units and their attributes
@@ -18,6 +13,9 @@ with open('static/units.json', 'r') as f:
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Add session middleware to enable storing saved battles
+app.add_middleware(SessionMiddleware, secret_key='!secret')
 
 router = APIRouter()
 
