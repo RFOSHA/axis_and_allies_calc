@@ -27,6 +27,7 @@ async def simulate_battle_endpoint(request: Request,
                                    attack_cruiser: int = Form(0),
                                    attack_aircraft_carrier: int = Form(0),
                                    attack_battleship: int = Form(0),
+                                   attack_aa: int = Form(0),
                                    defense_infantry: int = Form(0),
                                    defense_artillery: int = Form(0),
                                    defense_tank: int = Form(0),
@@ -37,7 +38,8 @@ async def simulate_battle_endpoint(request: Request,
                                    defense_cruiser: int = Form(0),
                                    defense_aircraft_carrier: int = Form(0),
                                    defense_battleship: int = Form(0),
-                                   number_of_simulations: int = Form(1)):
+                                   defense_aa: int = Form(0),
+                                   number_of_simulations: int = Form(1000)):
     attacking_units = {
         "Infantry": attack_infantry,
         "Artillery": attack_artillery,
@@ -48,7 +50,8 @@ async def simulate_battle_endpoint(request: Request,
         "Destroyer": attack_destroyer,
         "Cruiser": attack_cruiser,
         "Aircraft Carrier": attack_aircraft_carrier,
-        "Battleship": attack_battleship
+        "Battleship": attack_battleship,
+        "AA": attack_aa
     }
 
     defending_units = {
@@ -61,8 +64,12 @@ async def simulate_battle_endpoint(request: Request,
         "Destroyer": defense_destroyer,
         "Cruiser": defense_cruiser,
         "Aircraft Carrier": defense_aircraft_carrier,
-        "Battleship": defense_battleship
+        "Battleship": defense_battleship,
+        "AA": defense_aa
     }
+
+    print(defending_units)
+    print(defense_aa)
 
     initial_attacking_units = {unit: count for unit, count in attacking_units.items() if count > 0}
     initial_defending_units = {unit: count for unit, count in defending_units.items() if count > 0}
@@ -78,8 +85,6 @@ async def simulate_battle_endpoint(request: Request,
         new_key_tuple = tuple(item for item in key_tuple if item[1] != 0)
         # Add to the new dictionary
         filtered_attacker_remaining_units_count[new_key_tuple] = value
-
-    print(filtered_attacker_remaining_units_count)
 
     filtered_defender_remaining_units_count = {}
 
@@ -99,10 +104,7 @@ async def simulate_battle_endpoint(request: Request,
         list_defender_remaining_units_count.append(f"{key_str}: {value}")
 
     # Join the formatted components into a single string
-    str_defender_remaining_units_count = ', '.join(list_defender_remaining_units_count)
-
-    print("string defender remaining")
-    print(str_defender_remaining_units_count)
+    # str_defender_remaining_units_count = ', '.join(list_defender_remaining_units_count)
 
     attacker_plot_path = "static/attacker_plot.png"
     defender_plot_path = "static/defender_plot.png"
@@ -121,6 +123,7 @@ async def simulate_battle_endpoint(request: Request,
         "attack_cruiser": attack_cruiser,
         "attack_aircraft_carrier": attack_aircraft_carrier,
         "attack_battleship": attack_battleship,
+        "attack_aa": attack_aa,
         "defense_infantry": defense_infantry,
         "defense_artillery": defense_artillery,
         "defense_tank": defense_tank,
@@ -131,6 +134,7 @@ async def simulate_battle_endpoint(request: Request,
         "defense_cruiser": defense_cruiser,
         "defense_aircraft_carrier": defense_aircraft_carrier,
         "defense_battleship": defense_battleship,
+        "defense_aa": defense_aa,
         "number_of_simulations": number_of_simulations
     }
 

@@ -9,5 +9,5 @@
     "Cruiser": {"attack": 3, "defense": 3, "ipc": 12},
     "Aircraft Carrier": {"attack": 1, "defense": 2, "ipc": 14},
     "Battleship": {"attack": 4, "defense": 4, "ipc": 20},
-    "Anti-Aircraft": {"attack": 0, "defense": 1, "ipc": 5}
+    "AA": {"attack": 0, "defense": 1, "ipc": 5}
 }
