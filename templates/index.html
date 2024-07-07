@@ -9,6 +9,9 @@
             max-width: 40px;  /* Cap the size of the image */
             height: auto;
         }
+        .unit-row {
+            display: none;
+        }
     </style>
     <title>Battle Simulation</title>
 </head>
@@ -16,11 +19,21 @@
     <div class="container mt-5">
         <h1 class="text-center">Battle Simulation</h1>
         <form id="battle-form" action="/simulate" method="post">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <label for="battle-type">Select Battle Type:</label>
+                    <select class="form-control" id="battle-type" name="battle_type">
+                        <option value="land">Land Battle</option>
+                        <option value="amphibious">Amphibious Assault</option>
+                        <option value="sea">Sea Battle</option>
+                    </select>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <h2>Attacking Units</h2>
                     {% for unit, attributes in units.items() %}
-                        <div class="form-row align-items-center mb-3">
+                        <div class="form-row align-items-center mb-3 unit-row" data-unit="{{ unit|lower }}">
                             <div class="col-2">
                                 <img src="/static/images/{{ unit|lower }}.png" alt="{{ unit }}" class="img-fluid unit-image">
                             </div>
@@ -36,7 +49,7 @@
                 <div class="col-md-4">
                     <h2>Defending Units</h2>
                     {% for unit, attributes in units.items() %}
-                        <div class="form-row align-items-center mb-3">
+                        <div class="form-row align-items-center mb-3 unit-row" data-unit="{{ unit|lower }}">
                             <div class="col-2">
                                 <img src="/static/images/{{ unit|lower }}.png" alt="{{ unit }}" class="img-fluid unit-image">
                             </div>
@@ -79,23 +92,10 @@
             </div>
         </form>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('swap-values-btn').addEventListener('click', function() {
-                const unitNames = {{ units.keys()|list|tojson }};
-                unitNames.forEach(unit => {
-                    const attackInput = document.getElementById('attack_' + unit.toLowerCase());
-                    const defenseInput = document.getElementById('defense_' + unit.toLowerCase());
-                    const tempValue = attackInput.value;
-                    attackInput.value = defenseInput.value;
-                    defenseInput.value = tempValue;
-                });
-            });
-        });
-    </script>
     <script src="/static/js/battle.js"></script>
+    <script>
+        // Ensure units data is available for JavaScript
+        var units = {{ units.keys()|list|tojson }};
+    </script>
 </body>
 </html>
-
-
-
