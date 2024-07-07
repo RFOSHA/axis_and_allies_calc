@@ -56,6 +56,8 @@ def simulate_battle(attacking_units, defending_units):
 
     # Roll for each defending unit
     for unit, count in defending_units.items():
+        if unit == "AA":
+            continue #Skip AA units
         for _ in range(count):
             defense_value = units[unit]["defense"]
             roll = random.randint(1, 6)
