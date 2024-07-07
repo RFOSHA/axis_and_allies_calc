@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".delete-battle-btn").forEach(button => {
         button.addEventListener("click", function() {
             deleteBattle(button.dataset.battleName);
+
         });
     });
 });

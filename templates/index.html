@@ -59,6 +59,7 @@
                         <button type="submit" class="btn btn-primary">Simulate Battle</button>
                         <button type="button" id="clear-form-btn" class="btn btn-secondary">Clear Form</button>
                         <button type="button" id="save-battle-btn" class="btn btn-success">Save Battle</button>
+                        <button type="button" id="swap-values-btn" class="btn btn-warning">Swap Values</button>
                     </div>
                     <div id="saved-battles" class="mt-5">
                         <h2>Saved Battles</h2>
@@ -78,6 +79,23 @@
             </div>
         </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('swap-values-btn').addEventListener('click', function() {
+                const unitNames = {{ units.keys()|list|tojson }};
+                unitNames.forEach(unit => {
+                    const attackInput = document.getElementById('attack_' + unit.toLowerCase());
+                    const defenseInput = document.getElementById('defense_' + unit.toLowerCase());
+                    const tempValue = attackInput.value;
+                    attackInput.value = defenseInput.value;
+                    defenseInput.value = tempValue;
+                });
+            });
+        });
+    </script>
     <script src="/static/js/battle.js"></script>
 </body>
 </html>
+
+
+
