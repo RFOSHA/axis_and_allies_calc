@@ -20,7 +20,6 @@ def simulate_battle(attacking_units, defending_units):
 
     # Roll for anti-aircraft gun
     num_anti_aircraft = defending_units.get("AA", 0)
-    print(f"Number of antiaircraft: {num_anti_aircraft}")
     num_fighters = attacking_units.get("Fighter", 0)
     num_bombers = attacking_units.get("Bomber", 0)
     attacking_air_units = {key: attacking_units[key] for key in ["Fighter", "Bomber"]}

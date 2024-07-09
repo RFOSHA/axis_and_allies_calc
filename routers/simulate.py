@@ -68,9 +68,6 @@ async def simulate_battle_endpoint(request: Request,
         "AA": defense_aa
     }
 
-    print(defending_units)
-    print(defense_aa)
-
     initial_attacking_units = {unit: count for unit, count in attacking_units.items() if count > 0}
     initial_defending_units = {unit: count for unit, count in defending_units.items() if count > 0}
 
@@ -95,17 +92,15 @@ async def simulate_battle_endpoint(request: Request,
         filtered_defender_remaining_units_count[new_key_tuple] = value
 
     # Iterate through the dictionary
-    list_defender_remaining_units_count = [] = []
-    for key, value in filtered_defender_remaining_units_count.items():
-        # Create a string for the current key
-        print(key, value)
-        key_str = ', '.join([f"{unit} {num}" for unit, num in key])
-        # Append the formatted string to the list
-        list_defender_remaining_units_count.append(f"{key_str}: {value}")
+    # list_defender_remaining_units_count = [] = []
+    # for key, value in filtered_defender_remaining_units_count.items():
+    #     # Create a string for the current key
+    #     print(key, value)
+    #     key_str = ', '.join([f"{unit} {num}" for unit, num in key])
+    #     # Append the formatted string to the list
+    #     list_defender_remaining_units_count.append(f"{key_str}: {value}")
 
-    # Join the formatted components into a single string
-    # str_defender_remaining_units_count = ', '.join(list_defender_remaining_units_count)
-
+    #Set path for plots
     attacker_plot_path = "static/attacker_plot.png"
     defender_plot_path = "static/defender_plot.png"
 

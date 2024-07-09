@@ -1,9 +1,10 @@
-#Function to plot the results of the battle simulations
 import matplotlib.pyplot as plt
-import os
+import seaborn as sns
 from collections import defaultdict
 
 def format_key(key):
+    if not key or all(not unit for unit in key):
+        return 'None'
     return ', '.join([f"{unit} {num}" for unit, num in key])
 
 def plot_results(units_count, title, filename):
@@ -18,10 +19,14 @@ def plot_results(units_count, title, filename):
         labels.append(format_key(units))
         values.append(count)
 
-    plt.figure(figsize=(10, 6))
-    plt.barh(range(len(labels)), values, tick_label=[str(label) for label in labels])
-    plt.xlabel('Count')
-    plt.title(title)
+    sns.set(style="white")
+    plt.figure(figsize=(12, 8))
+    barplot = sns.barplot(x=values, y=[str(label) for label in labels], palette="viridis")
+    barplot.set_xlabel('Count', fontsize=14)
+    barplot.set_ylabel('Units', fontsize=14)
+    barplot.set_title(title, fontsize=16)
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()

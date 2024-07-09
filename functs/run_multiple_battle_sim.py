@@ -15,11 +15,15 @@ def run_multiple_battle_sims(attacking_units, defending_units, num_of_simulation
 
         if outcome == "tie":
             ties += 1
+            defender_remaining_units_count[tuple(remaining_defending_units.items())] += 1
+            attacker_remaining_units_count[tuple(remaining_attacking_units.items())] += 1
         elif outcome == "defender win":
             defender_win_count += 1
             defender_remaining_units_count[tuple(remaining_defending_units.items())] += 1
+            attacker_remaining_units_count[tuple(remaining_attacking_units.items())] += 1
         else:
             attacker_win_count += 1
             attacker_remaining_units_count[tuple(remaining_attacking_units.items())] += 1
+            defender_remaining_units_count[tuple(remaining_defending_units.items())] += 1
 
     return attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count
