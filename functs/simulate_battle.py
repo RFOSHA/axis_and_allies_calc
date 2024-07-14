@@ -37,7 +37,6 @@ def simulate_battle(attacking_units, defending_units):
 
         remaining_attacking_air_units = remove_hits(attacking_air_units, anti_air_hits)
         attacking_units.update(remaining_attacking_air_units)
-        print(attacking_units)
 
 
 

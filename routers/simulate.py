@@ -3,7 +3,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from functs.run_multiple_battle_sim import run_multiple_battle_sims
 from functs.plot_results import plot_results
+from functs.plot_round_results import plot_round_results
+import shutil
+
 from collections import defaultdict
+import os
 
 templates = Jinja2Templates(directory="templates")
 
@@ -11,6 +15,9 @@ router = APIRouter()
 
 def format_key(key):
     return ', '.join([f"{unit} {num}" for unit, num in key])
+
+def get_image_paths(directory):
+    return [os.path.join(directory, filename) for filename in os.listdir(directory) if filename.endswith(('png', 'jpg', 'jpeg', 'gif'))]
 
 # Add the custom filter to the Jinja2 environment
 templates.env.filters['format_key'] = format_key
@@ -71,7 +78,7 @@ async def simulate_battle_endpoint(request: Request,
     initial_attacking_units = {unit: count for unit, count in attacking_units.items() if count > 0}
     initial_defending_units = {unit: count for unit, count in defending_units.items() if count > 0}
 
-    attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count = run_multiple_battle_sims(
+    attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count, battle_history_attacking_df, battle_history_defending_df = run_multiple_battle_sims(
         attacking_units, defending_units, number_of_simulations)
 
     # Filter out units with a quantity of 0
@@ -91,21 +98,25 @@ async def simulate_battle_endpoint(request: Request,
         # Add to the new dictionary
         filtered_defender_remaining_units_count[new_key_tuple] = value
 
-    # Iterate through the dictionary
-    # list_defender_remaining_units_count = [] = []
-    # for key, value in filtered_defender_remaining_units_count.items():
-    #     # Create a string for the current key
-    #     print(key, value)
-    #     key_str = ', '.join([f"{unit} {num}" for unit, num in key])
-    #     # Append the formatted string to the list
-    #     list_defender_remaining_units_count.append(f"{key_str}: {value}")
-
     #Set path for plots
+    shutil.rmtree('static/attacker_rxr')
+    os.makedirs('static/attacker_rxr')
+    shutil.rmtree('static/defender_rxr')
+    os.makedirs('static/defender_rxr')
     attacker_plot_path = "static/attacker_plot.png"
     defender_plot_path = "static/defender_plot.png"
+    attacker_rxr_plot_path = "static/attacker_rxr/attacker_rxr_plot"
+    defender_rxr_plot_path = "static/defender_rxr/defender_rxr_plot"
+
 
     plot_results(filtered_attacker_remaining_units_count, "Attacker Remaining Units Distribution", attacker_plot_path)
     plot_results(filtered_defender_remaining_units_count, "Defender Remaining Units Distribution", defender_plot_path)
+    plot_round_results(battle_history_attacking_df, attacker_rxr_plot_path)
+    print("THIS IS THE BATTLE HISTORY FOR THE DEFENDER")
+    print(battle_history_defending_df)
+    plot_round_results(battle_history_defending_df, defender_rxr_plot_path)
+    attacker_images = get_image_paths('static/attacker_rxr')
+    defender_images = get_image_paths('static/defender_rxr')
 
     form_data = {
         "attack_infantry": attack_infantry,
@@ -144,5 +155,7 @@ async def simulate_battle_endpoint(request: Request,
         "defender_plot_path": "/" + defender_plot_path,
         "initial_attacking_units": initial_attacking_units,
         "initial_defending_units": initial_defending_units,
-        "form_data": form_data
+        "form_data": form_data,
+        "attacker_rxr_images": [img for img in attacker_images],
+        "defender_rxr_images": [img_d for img_d in defender_images]
     })

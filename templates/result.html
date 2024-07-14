@@ -17,20 +17,26 @@
             <div class="col-md-6">
                 <h2>Attacker Remaining Units After Each Win</h2>
                 <ul class="list-group">
-                {% for units, count in attacker_remaining_units_count.items() %}
-                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>
-                {% endfor %}
+<!--                {% for units, count in attacker_remaining_units_count.items() %}-->
+<!--                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>-->
+<!--                {% endfor %}-->
                 </ul>
                 <img src="{{ attacker_plot_path }}" alt="Attacker Remaining Units Distribution" class="img-fluid mt-3">
+                {% for image_path in attacker_rxr_images %}
+                    <img src="{{ image_path }}" alt="Attacker Image" class="img-fluid mt-3">
+                {% endfor %}
             </div>
             <div class="col-md-6">
                 <h2>Defender Remaining Units After Each Win</h2>
                 <ul class="list-group">
-                {% for units, count in defender_remaining_units_count.items() %}
-                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>
-                {% endfor %}
+<!--                {% for units, count in defender_remaining_units_count.items() %}-->
+<!--                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>-->
+<!--                {% endfor %}-->
                 </ul>
                 <img src="{{ defender_plot_path }}" alt="Defender Remaining Units Distribution" class="img-fluid mt-3">
+                {% for image_path in defender_rxr_images %}
+                    <img src="{{ image_path }}" alt="Defender Image" class="img-fluid mt-3">
+                {% endfor %}
             </div>
         </div>
 
