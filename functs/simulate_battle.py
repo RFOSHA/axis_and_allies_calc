@@ -17,23 +17,6 @@ def simulate_battle(attacking_units, defending_units):
     paired_infantry = min(num_infantry, num_artillery)
     unpaired_infantry = num_infantry - paired_infantry
 
-    #Roll for amphibious bombardment
-    # num_attack_infantry = attacking_units.get("Infantry", 0)
-    # num_attack_artillery = attacking_units.get("Artillery", 0)
-    # num_attack_tank = attacking_units.get("Tank", 0)
-    # num_attack_cruiser = attacking_units.get("Cruiser", 0)
-    # num_attack_battleship = attacking_units.get("Battleship", 0)
-    # num_attacking_land_units = num_attack_infantry + num_attack_artillery + num_attack_tank
-    # num_attacking_naval_units = num_attack_cruiser + num_attack_battleship
-    #
-    # if num_attacking_land_units > 0 and num_attacking_naval_units > 0:
-    #     bombardment_units = {key: value for key, value in attacking_units.items() if key in ["Cruiser", "Battleship"]}
-    #     for unit, count in bombardment_units.items():
-    #         attack_value = units[unit]["attack"]
-    #         roll = random.randint(1, 6)
-    #         if roll <= attack_value:
-    #             attack_hits += 1
-
     # Roll for each attacking unit
     for unit, count in attacking_units.items():
         for _ in range(count):
