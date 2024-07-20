@@ -21,7 +21,7 @@ def plot_results(units_count, title, filename):
 
     sns.set(style="white")
     plt.figure(figsize=(12, 8))
-    barplot = sns.barplot(x=values, y=[str(label) for label in labels], palette="viridis")
+    barplot = sns.barplot(x=values, y=[str(label) for label in labels], palette="viridis", hue=values, legend=False)
     barplot.set_xlabel('Count', fontsize=14)
     barplot.set_ylabel('Units', fontsize=14)
     barplot.set_title(title, fontsize=16)

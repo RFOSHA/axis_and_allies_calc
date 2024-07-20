@@ -1,5 +1,12 @@
 import pandas as pd
 from functs.simulate_battle import simulate_battle
+from functs.remove_hits import remove_hits
+import random
+import json
+
+# Define the units and their attributes
+with open('static/units.json', 'r') as f:
+    units = json.load(f)
 
 def remove_zero_values_and_convert_to_string(input_dict):
     """
@@ -25,8 +32,32 @@ def run_battle_simulation(attacking_units, defending_units):
     battle_history_attacking = []
     battle_history_defending = []
     battle_round = 0
+    anti_air_hits = 0
 
+    # Roll for anti-aircraft gun
+    print("IN THE AA MODULE")
+    num_anti_aircraft = defending_units.get("AA", 0)
+    num_fighters = attacking_units.get("Fighter", 0)
+    num_bombers = attacking_units.get("Bomber", 0)
+    attacking_air_units = {key: attacking_units[key] for key in ["Fighter", "Bomber"]}
+
+    if num_anti_aircraft > 0 and (num_bombers+num_fighters) > 0:
+        if (num_anti_aircraft * 3) <= (num_bombers+num_fighters):
+            rounds = num_anti_aircraft * 3
+        else:
+            rounds = (num_bombers+num_fighters)
+
+        for i in range(rounds):
+            roll = random.randint(1, 6)
+            if roll <= units["AA"]["defense"]:
+                anti_air_hits += 1
+
+        remaining_attacking_air_units = remove_hits(attacking_air_units, anti_air_hits)
+        attacking_units.update(remaining_attacking_air_units)
+
+    print("IN THE MAIN BATTLE MODULE")
     while sum(attacking_units.values()) > 0 and sum(defending_units.values()) > 0:
+        print(f"Battle round: {battle_round}")
         battle_round += 1
         attack_hits, defense_hits, attacking_units, defending_units = simulate_battle(attacking_units, defending_units)
 
@@ -55,17 +86,3 @@ def run_battle_simulation(attacking_units, defending_units):
 
     return outcome, attacking_units, defending_units, df_attacking_rounds, df_defending_rounds
 
-
-
-
-
-
-# Record the current state of the units
-# attacking_units_round = str(f"attacking_units_{battle_round}")
-# defending_units_round = str(f"defending_units_{battle_round}")
-#
-# battle_history.append({
-#     'round': battle_round,
-#     attacking_units_round: attacking_units.copy(),
-#     defending_units_round: defending_units.copy()
-# })

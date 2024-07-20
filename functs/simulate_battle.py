@@ -10,7 +10,6 @@ with open('static/units.json', 'r') as f:
 def simulate_battle(attacking_units, defending_units):
     attack_hits = 0
     defense_hits = 0
-    anti_air_hits = 0
 
     # Calculate paired infantry and artillery
     num_infantry = attacking_units.get("Infantry", 0)
@@ -18,27 +17,22 @@ def simulate_battle(attacking_units, defending_units):
     paired_infantry = min(num_infantry, num_artillery)
     unpaired_infantry = num_infantry - paired_infantry
 
-    # Roll for anti-aircraft gun
-    num_anti_aircraft = defending_units.get("AA", 0)
-    num_fighters = attacking_units.get("Fighter", 0)
-    num_bombers = attacking_units.get("Bomber", 0)
-    attacking_air_units = {key: attacking_units[key] for key in ["Fighter", "Bomber"]}
-
-    if num_anti_aircraft > 0 and (num_bombers+num_fighters) > 0:
-        if (num_anti_aircraft * 3) <= (num_bombers+num_fighters):
-            rounds = num_anti_aircraft * 3
-        else:
-            rounds = (num_bombers+num_fighters)
-
-        for i in range(rounds):
-            roll = random.randint(1, 6)
-            if roll <= units["AA"]["defense"]:
-                anti_air_hits += 1
-
-        remaining_attacking_air_units = remove_hits(attacking_air_units, anti_air_hits)
-        attacking_units.update(remaining_attacking_air_units)
-
-
+    #Roll for amphibious bombardment
+    # num_attack_infantry = attacking_units.get("Infantry", 0)
+    # num_attack_artillery = attacking_units.get("Artillery", 0)
+    # num_attack_tank = attacking_units.get("Tank", 0)
+    # num_attack_cruiser = attacking_units.get("Cruiser", 0)
+    # num_attack_battleship = attacking_units.get("Battleship", 0)
+    # num_attacking_land_units = num_attack_infantry + num_attack_artillery + num_attack_tank
+    # num_attacking_naval_units = num_attack_cruiser + num_attack_battleship
+    #
+    # if num_attacking_land_units > 0 and num_attacking_naval_units > 0:
+    #     bombardment_units = {key: value for key, value in attacking_units.items() if key in ["Cruiser", "Battleship"]}
+    #     for unit, count in bombardment_units.items():
+    #         attack_value = units[unit]["attack"]
+    #         roll = random.randint(1, 6)
+    #         if roll <= attack_value:
+    #             attack_hits += 1
 
     # Roll for each attacking unit
     for unit, count in attacking_units.items():
