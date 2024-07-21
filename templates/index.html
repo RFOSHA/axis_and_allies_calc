@@ -4,57 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .unit-image {
-            max-width: 40px;  /* Cap the size of the image */
-            height: auto;
-        }
-        .unit-row {
-            display: none;
-        }
-    </style>
+    <link href="/static/css/styles.css" rel="stylesheet">
     <title>Battle Simulation</title>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5 mx-auto content-wrapper">
         <h1 class="text-center">Battle Simulation</h1>
         <form id="battle-form" action="/simulate" method="post">
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <label for="battle-type">Select Battle Type:</label>
-                    <select class="form-control" id="battle-type" name="battle_type">
-                        <option value="land">Land Battle</option>
-                        <option value="amphibious">Amphibious Assault</option>
-                        <option value="sea">Sea Battle</option>
-                    </select>
-                </div>
-            </div>
             <div class="row">
-                <div class="col-md-4">
-                    <h2>Attacking Units</h2>
+                <div class="col-md-5">
+                    <div class="form-row align-items-center mb-3">
+                        <div class="col-1">
+                            <!-- Empty div to align with image column -->
+                        </div>
+                        <div class="col-2">
+                            <!-- Empty div to align with label column -->
+                        </div>
+                        <div class="col-4 text-center">
+                            <h3>Attacker</h3>
+                        </div>
+                        <div class="col-4 text-center">
+                            <h3>Defender</h3>
+                        </div>
+                    </div>
                     {% for unit, attributes in units.items() %}
                         <div class="form-row align-items-center mb-3 unit-row" data-unit="{{ unit|lower }}">
-                            <div class="col-2">
+                            <div class="col-1">
                                 <img src="/static/images/{{ unit|lower }}.png" alt="{{ unit }}" class="img-fluid unit-image">
                             </div>
-                            <div class="col-6">
+                            <div class="col-2">
                                 <label for="attack_{{ unit|lower }}" class="col-form-label">{{ unit }}:</label>
                             </div>
                             <div class="col-4">
                                 <input type="number" class="form-control" id="attack_{{ unit|lower }}" name="attack_{{ unit|lower }}" min="0" value="{{ form_data.get('attack_' + unit|lower, 0) }}">
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="col-md-4">
-                    <h2>Defending Units</h2>
-                    {% for unit, attributes in units.items() %}
-                        <div class="form-row align-items-center mb-3 unit-row" data-unit="{{ unit|lower }}">
-                            <div class="col-2">
-                                <img src="/static/images/{{ unit|lower }}.png" alt="{{ unit }}" class="img-fluid unit-image">
-                            </div>
-                            <div class="col-6">
-                                <label for="defense_{{ unit|lower }}" class="col-form-label">{{ unit }}:</label>
                             </div>
                             <div class="col-4">
                                 <input type="number" class="form-control" id="defense_{{ unit|lower }}" name="defense_{{ unit|lower }}" min="0" value="{{ form_data.get('defense_' + unit|lower, 0) }}">
@@ -62,20 +44,46 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h2>Simulation Settings</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                        <label for="battle-type">Select Battle Type:</label>
+                        <select class="form-control" id="battle-type" name="battle_type">
+                            <option value="land">Land Battle</option>
+                            <option value="amphibious">Amphibious Assault</option>
+                            <option value="sea">Sea Battle</option>
+                        </select>
+                        </div>
+                    </div>
                     <div class="form-group mt-4">
                         <label for="number_of_simulations">Number of Simulations:</label>
                         <input type="number" class="form-control" id="number_of_simulations" name="number_of_simulations" min="1" value="{{ form_data.get('number_of_simulations', 1) }}">
                     </div>
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary">Simulate Battle</button>
-                        <button type="button" id="clear-form-btn" class="btn btn-secondary">Clear Form</button>
-                        <button type="button" id="save-battle-btn" class="btn btn-success">Save Battle</button>
-                        <button type="button" id="swap-values-btn" class="btn btn-warning">Swap Values</button>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block">Simulate Battle</button>
+                        </div>
                     </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <button type="button" id="clear-form-btn" class="btn btn-primary btn-block">Clear Form</button>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <button type="button" id="save-battle-btn" class="btn btn-primary btn-block">Save Battle</button>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <button type="button" id="swap-values-btn" class="btn btn-primary btn-block">Swap Values</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h2>Saved Battles</h2>
                     <div id="saved-battles" class="mt-5">
-                        <h2>Saved Battles</h2>
                         <ul id="saved-battles-list" class="list-group">
                             {% for battle_name, battle_data in saved_battles.items() %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
