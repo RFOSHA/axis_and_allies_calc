@@ -17,6 +17,7 @@ router = APIRouter()
 async def read_form(request: Request):
     form_data = dict(request.query_params)
     saved_battles = request.session.get("saved_battles", {})
+    print(saved_battles)
     return templates.TemplateResponse("index.html", {"request": request, "units": units, "form_data": form_data, "saved_battles": saved_battles})
 
 class BattleData(BaseModel):
@@ -26,8 +27,10 @@ class BattleData(BaseModel):
 @router.post("/save_battle")
 async def save_battle(request: Request, battle: BattleData):
     saved_battles = request.session.get("saved_battles", {})
+    print("Before saving:", saved_battles)  # Debugging log
     saved_battles[battle.name] = battle.data
     request.session["saved_battles"] = saved_battles
+    print("After saving:", saved_battles)  # Debugging log
     return JSONResponse(status_code=200, content={"message": "Battle saved successfully"})
 
 @router.get("/load_battle")
@@ -41,7 +44,7 @@ async def delete_battle(request: Request, name: str):
     saved_battles = request.session.get("saved_battles", {})
     if name in saved_battles:
         del saved_battles[name]
-        request.session["save_battles"] = saved_battles
+        request.session["saved_battles"] = saved_battles
         return JSONResponse(status_code=200, content={"message": "Battle deleted successfully"})
     else:
         return JSONResponse(status_code=404, content={"message": "Battle not found"})
