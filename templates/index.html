@@ -6,6 +6,15 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/styles.css" rel="stylesheet">
     <title>Battle Simulation</title>
+    <style>
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .button-group button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid mt-5 mx-auto content-wrapper">
@@ -48,12 +57,12 @@
                     <h2>Simulation Settings</h2>
                     <div class="row mb-4">
                         <div class="col-md-12">
-                        <label for="battle-type">Select Battle Type:</label>
-                        <select class="form-control" id="battle-type" name="battle_type">
-                            <option value="land">Land Battle</option>
-                            <option value="amphibious">Amphibious Assault</option>
-                            <option value="sea">Sea Battle</option>
-                        </select>
+                            <label for="battle-type">Select Battle Type:</label>
+                            <select class="form-control" id="battle-type" name="battle_type">
+                                <option value="land">Land Battle</option>
+                                <option value="amphibious">Amphibious Assault</option>
+                                <option value="sea">Sea Battle</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group mt-4">
@@ -88,9 +97,9 @@
                             {% for battle_name, battle_data in saved_battles.items() %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <strong>{{ battle_name }}</strong>
-                                    <div>
-                                        <button type="button" class="btn btn-sm btn-primary ml-3 load-battle-btn" data-battle-name="{{ battle_name }}">Load</button>
-                                        <button type="button" class="btn btn-sm btn-danger ml-3 delete-battle-btn" data-battle-name="{{ battle_name }}">Delete</button>
+                                    <div class="button-group">
+                                        <button type="button" class="btn btn-sm btn-primary load-battle-btn" data-battle-name="{{ battle_name }}">Load</button>
+                                        <button type="button" class="btn btn-sm btn-danger delete-battle-btn" data-battle-name="{{ battle_name }}">Delete</button>
                                     </div>
                                 </li>
                             {% endfor %}

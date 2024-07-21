@@ -59,7 +59,7 @@ label {
 .list-group-item {
     background-color: #696969; /* Dim Gray for list items */
     color: #F4A460; /* Sandy Brown for list item text */
-    border-color: #4e4e4d; /* Olive Drab for list item borders */
+    border-color: #4e4e4d;  Olive Drab for list item borders */
     transition: background-color 0.3s ease;
 }
 
@@ -74,4 +74,12 @@ label {
 
 .unit-row {
     display: none;
+}
+
+.button-group {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+.button-group button {
+    margin-left: 10px !important;
 }

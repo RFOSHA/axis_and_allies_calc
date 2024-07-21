@@ -41,7 +41,7 @@ async def delete_battle(request: Request, name: str):
     saved_battles = request.session.get("saved_battles", {})
     if name in saved_battles:
         del saved_battles[name]
-        request.session["save_battles"] = saved_battles
+        request.session["saved_battles"] = saved_battles
         return JSONResponse(status_code=200, content={"message": "Battle deleted successfully"})
     else:
         return JSONResponse(status_code=404, content={"message": "Battle not found"})

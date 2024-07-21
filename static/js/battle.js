@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({name: battleName, data: formData})
+                body: JSON.stringify({ name: battleName, data: formData })
             }).then(response => {
                 if (response.ok) {
                     location.reload();
@@ -39,16 +39,18 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function loadBattle(battleName) {
-        fetch(`/load_battle?name=${battleName}`).then(response => response.json()).then(data => {
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    var input = document.getElementsByName(key)[0];
-                    if (input) {
-                        input.value = data[key];
+        fetch(`/load_battle?name=${battleName}`)
+            .then(response => response.json())
+            .then(data => {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var input = document.getElementsByName(key)[0];
+                        if (input) {
+                            input.value = data[key];
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     function deleteBattle(battleName) {
@@ -65,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Function to swap values between attacking and defending units
     function swapValues() {
         units.forEach(unit => {
             const attackInput = document.getElementById('attack_' + unit.toLowerCase());
@@ -76,7 +77,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Function to update visible units based on selected battle type
     function updateVisibleUnits() {
         const unitsByBattleType = {
             land: ['infantry', 'artillery', 'tank', 'fighter', 'bomber', 'aa'],
@@ -97,22 +97,50 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Attach event listeners
     document.getElementById("clear-form-btn").addEventListener("click", clearForm);
     document.getElementById("save-battle-btn").addEventListener("click", saveBattle);
     document.getElementById("swap-values-btn").addEventListener("click", swapValues);
     document.getElementById("battle-type").addEventListener("change", updateVisibleUnits);
 
+    var savedBattles = JSON.parse(localStorage.getItem('savedBattles')) || {};
+    var savedBattlesList = document.getElementById('saved-battles-list');
+    if (savedBattlesList) {
+        for (var battleName in savedBattles) {
+            if (savedBattles.hasOwnProperty(battleName)) {
+                var listItem = document.createElement('li');
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                listItem.textContent = battleName;
+                var buttonGroup = document.createElement('div');
+                buttonGroup.className = 'button-group';
+                var loadButton = document.createElement('button');
+                loadButton.textContent = 'Load';
+                loadButton.className = 'btn btn-sm btn-primary load-battle-btn';
+                loadButton.dataset.battleName = battleName;
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'btn btn-sm btn-danger delete-battle-btn';
+                deleteButton.dataset.battleName = battleName;
+                buttonGroup.appendChild(loadButton);
+                buttonGroup.appendChild(deleteButton);
+                listItem.appendChild(buttonGroup);
+                savedBattlesList.appendChild(listItem);
+            }
+        }
+    }
+
     document.querySelectorAll(".load-battle-btn").forEach(button => {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
             loadBattle(button.dataset.battleName);
         });
     });
+
     document.querySelectorAll(".delete-battle-btn").forEach(button => {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
             deleteBattle(button.dataset.battleName);
         });
     });
 
-    updateVisibleUnits(); // Initial call to set the correct units on page load
+    updateVisibleUnits();
 });
