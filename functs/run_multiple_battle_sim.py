@@ -16,8 +16,8 @@ def run_multiple_battle_sims(attacking_units, defending_units, num_of_simulation
         outcome, remaining_attacking_units, remaining_defending_units, df_attacking_rounds, df_defending_rounds\
             = run_battle_simulation(attacking_units.copy(), defending_units.copy())
 
-        battle_history_attacking_df = pd.concat([df_attacking_rounds,battle_history_attacking_df], ignore_index=True).groupby(['Round', 'Units']).sum().reset_index()
-        battle_history_defending_df = pd.concat([df_defending_rounds,battle_history_defending_df], ignore_index=True).groupby(['Round', 'Units']).sum().reset_index()
+        battle_history_attacking_df = pd.concat([df_attacking_rounds,battle_history_attacking_df], ignore_index=True).groupby(['Round', 'Units', 'Value']).sum().reset_index()
+        battle_history_defending_df = pd.concat([df_defending_rounds,battle_history_defending_df], ignore_index=True).groupby(['Round', 'Units', 'Value']).sum().reset_index()
 
         if outcome == "tie":
             ties += 1

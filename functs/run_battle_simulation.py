@@ -8,6 +8,13 @@ import json
 with open('static/units.json', 'r') as f:
     units = json.load(f)
 
+def calculate_total_ipc(unit_counts):
+    total_ipc = 0
+    for unit, count in unit_counts.items():
+        if unit in units:
+            total_ipc += units[unit]['ipc'] * count
+    return total_ipc
+
 def remove_zero_values_and_convert_to_string(input_dict):
     """
     Removes keys with a value of 0 from the dictionary and converts the result to a string.
@@ -83,13 +90,16 @@ def run_battle_simulation(attacking_units, defending_units):
         if battle_round == 1:
             defending_units = remove_hits(defending_units, naval_bomb_hits)
 
+        attacking_units_cumulative_value = calculate_total_ipc(attacking_units)
+        defending_units_cumulative_value = calculate_total_ipc(defending_units)
+
         # Filter out keys with 0 values
         filtered_attacking_units = remove_zero_values_and_convert_to_string(attacking_units)
         filtered_defending_units = remove_zero_values_and_convert_to_string(defending_units)
 
         # Record the current state of the units
-        battle_history_attacking.append({'Round': battle_round, 'Units': filtered_attacking_units, 'Count': 1})
-        battle_history_defending.append({'Round': battle_round, 'Units': filtered_defending_units, 'Count': 1})
+        battle_history_attacking.append({'Round': battle_round, 'Units': filtered_attacking_units, 'Count': 1, 'Value': attacking_units_cumulative_value})
+        battle_history_defending.append({'Round': battle_round, 'Units': filtered_defending_units, 'Count': 1, 'Value': defending_units_cumulative_value})
 
     df_attacking_rounds = pd.DataFrame(battle_history_attacking)
 

@@ -4,6 +4,7 @@ import plotly.io as pio
 from collections import defaultdict
 
 def plot_round_results(df, filename_prefix, num_simulations):
+    # print(df)
     rounds = df['Round'].unique()
     plot_htmls = defaultdict(list)
 
@@ -11,8 +12,10 @@ def plot_round_results(df, filename_prefix, num_simulations):
         filename = str(f"{filename_prefix}_{round_num}.html")
         round_df = df[df['Round'] == round_num]
 
+        # Sort the DataFrame by Value in descending order
+        round_df = round_df.sort_values(by='Value', ascending=False).reset_index(drop=True)
 
-        round_df['Percentage'] = (round_df['Count'] / num_simulations) * 100  # Convert to percentage
+        round_df['Percentage'] = ((round_df['Count'] / num_simulations) * 100).round(2)  # Convert to percentage
 
         fig = px.bar(
             round_df,
@@ -27,7 +30,6 @@ def plot_round_results(df, filename_prefix, num_simulations):
 
         fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
         fig.update_layout(
-            yaxis=dict(autorange="reversed"),
             showlegend=False,
             plot_bgcolor='#4e4e4d',
             paper_bgcolor='#4e4e4d',
