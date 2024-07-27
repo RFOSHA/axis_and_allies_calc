@@ -22,48 +22,38 @@ document.addEventListener("DOMContentLoaded", function() {
             for (var i = 0; i < inputs.length; i++) {
                 formData[inputs[i].name] = inputs[i].value;
             }
-            fetch('/save_battle', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name: battleName, data: formData })
-            }).then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert("Failed to save battle");
-                }
-            });
+            var battleType = document.getElementById('battle-type').value;
+            var savedBattles = JSON.parse(localStorage.getItem('savedBattles')) || {};
+            savedBattles[battleName] = { data: formData, type: battleType };
+            localStorage.setItem('savedBattles', JSON.stringify(savedBattles));
+            location.reload();
         }
     }
 
     function loadBattle(battleName) {
-        fetch(`/load_battle?name=${battleName}`)
-            .then(response => response.json())
-            .then(data => {
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        var input = document.getElementsByName(key)[0];
-                        if (input) {
-                            input.value = data[key];
-                        }
-                    }
+        var savedBattles = JSON.parse(localStorage.getItem('savedBattles')) || {};
+        var battle = savedBattles[battleName] || {};
+        var data = battle.data || {};
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                var input = document.getElementsByName(key)[0];
+                if (input) {
+                    input.value = data[key];
                 }
-            });
+            }
+        }
+        if (battle.type) {
+            document.getElementById('battle-type').value = battle.type;
+            updateVisibleUnits();
+        }
     }
 
     function deleteBattle(battleName) {
         if (confirm(`Are you sure you want to delete the battle "${battleName}"?`)) {
-            fetch(`/delete_battle?name=${battleName}`, {
-                method: 'DELETE'
-            }).then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert("Failed to delete battle");
-                }
-            });
+            var savedBattles = JSON.parse(localStorage.getItem('savedBattles')) || {};
+            delete savedBattles[battleName];
+            localStorage.setItem('savedBattles', JSON.stringify(savedBattles));
+            location.reload();
         }
     }
 
@@ -89,10 +79,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         document.querySelectorAll('.unit-row').forEach(row => {
             const unit = row.getAttribute('data-unit');
+            const attackInput = document.getElementById('attack_' + unit.toLowerCase());
+            const defenseInput = document.getElementById('defense_' + unit.toLowerCase());
             if (visibleUnits.includes(unit)) {
                 row.style.display = 'flex';
             } else {
                 row.style.display = 'none';
+                attackInput.value = 0;
+                defenseInput.value = 0;
             }
         });
     }
