@@ -5,7 +5,6 @@ from functs.run_multiple_battle_sim import run_multiple_battle_sims
 from functs.plot_results import plot_results
 from functs.plot_round_results import plot_round_results
 import shutil
-
 from collections import defaultdict
 import os
 
@@ -103,20 +102,13 @@ async def simulate_battle_endpoint(request: Request,
     os.makedirs('static/attacker_rxr')
     shutil.rmtree('static/defender_rxr')
     os.makedirs('static/defender_rxr')
-    attacker_plot_path = "static/attacker_plot.png"
-    defender_plot_path = "static/defender_plot.png"
+    attacker_plot_html = plot_results(filtered_attacker_remaining_units_count, "Attacker Remaining Units Distribution")
+    defender_plot_html = plot_results(filtered_defender_remaining_units_count, "Defender Remaining Units Distribution")
     attacker_rxr_plot_path = "static/attacker_rxr/attacker_rxr_plot"
     defender_rxr_plot_path = "static/defender_rxr/defender_rxr_plot"
 
-
-    plot_results(filtered_attacker_remaining_units_count, "Attacker Remaining Units Distribution", attacker_plot_path)
-    plot_results(filtered_defender_remaining_units_count, "Defender Remaining Units Distribution", defender_plot_path)
-    plot_round_results(battle_history_attacking_df, attacker_rxr_plot_path)
-    # print("THIS IS THE BATTLE HISTORY FOR THE DEFENDER")
-    # print(battle_history_defending_df)
-    plot_round_results(battle_history_defending_df, defender_rxr_plot_path)
-    attacker_images = get_image_paths('static/attacker_rxr')
-    defender_images = get_image_paths('static/defender_rxr')
+    attacker_round_plots = plot_round_results(battle_history_attacking_df, attacker_rxr_plot_path, number_of_simulations)
+    defender_round_plots = plot_round_results(battle_history_defending_df, defender_rxr_plot_path, number_of_simulations)
 
     form_data = {
         "attack_infantry": attack_infantry,
@@ -151,11 +143,11 @@ async def simulate_battle_endpoint(request: Request,
         "ties": ties,
         "attacker_remaining_units_count": dict(filtered_attacker_remaining_units_count),
         "defender_remaining_units_count": dict(filtered_defender_remaining_units_count),
-        "attacker_plot_path": "/" + attacker_plot_path,
-        "defender_plot_path": "/" + defender_plot_path,
+        "attacker_plot_html": attacker_plot_html,
+        "defender_plot_html": defender_plot_html,
         "initial_attacking_units": initial_attacking_units,
         "initial_defending_units": initial_defending_units,
         "form_data": form_data,
-        "attacker_rxr_images": [img for img in attacker_images],
-        "defender_rxr_images": [img_d for img_d in defender_images]
+        "attacker_round_plots": attacker_round_plots,
+        "defender_round_plots": defender_round_plots
     })

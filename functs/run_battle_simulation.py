@@ -36,7 +36,6 @@ def run_battle_simulation(attacking_units, defending_units):
     naval_bomb_hits = 0
 
     # Roll for anti-aircraft gun
-    # print("IN THE AA MODULE")
     num_anti_aircraft = defending_units.get("AA", 0)
     num_fighters = attacking_units.get("Fighter", 0)
     num_bombers = attacking_units.get("Bomber", 0)
@@ -65,36 +64,24 @@ def run_battle_simulation(attacking_units, defending_units):
     num_attacking_land_units = num_attack_infantry + num_attack_artillery + num_attack_tank
     num_attacking_naval_units = num_attack_cruiser + num_attack_battleship
 
-    print(f"attacking units: {attacking_units}")
-
     if num_attacking_land_units > 0 and num_attacking_naval_units > 0:
         bombardment_units = {key: value for key, value in attacking_units.items() if key in ["Cruiser", "Battleship"]}
-        print(f"bombardment units: {bombardment_units}")
         for unit, count in bombardment_units.items():
             for _ in range(count):
-                print(f"unit, count: {unit, count}")
                 attack_value = units[unit]["attack"]
                 roll = random.randint(1, 6)
                 if roll <= attack_value:
                     naval_bomb_hits += 1
-                    print(f"naval hits: {naval_bomb_hits}")
 
         attacking_units = {key: value for key, value in attacking_units.items() if key not in ["Cruiser", "Battleship"]}
-        print(f"attacking units minus naval bomb units: {attacking_units}")
 
-
-    # print("IN THE MAIN BATTLE MODULE")
+    #main battle module
     while sum(attacking_units.values()) > 0 and sum(defending_units.values()) > 0:
-        # print(f"Battle round: {battle_round}")
         battle_round += 1
         attack_hits, defense_hits, attacking_units, defending_units = simulate_battle(attacking_units, defending_units)
-        print(f"defending units: {defending_units}")
-        print(f"Attack Hits: {attack_hits}")
-        print(f"Defense Hits: {defense_hits}")
 
         if battle_round == 1:
             defending_units = remove_hits(defending_units, naval_bomb_hits)
-            print(f"defending units after naval bomb: {defending_units}")
 
         # Filter out keys with 0 values
         filtered_attacking_units = remove_zero_values_and_convert_to_string(attacking_units)
@@ -114,10 +101,6 @@ def run_battle_simulation(attacking_units, defending_units):
         outcome = "defender win"
     else:
         outcome = "attacker win"
-
-    # print(battle_round)
-    # print(battle_history_attacking)
-    # print(attacking_units)
 
     return outcome, attacking_units, defending_units, df_attacking_rounds, df_defending_rounds
 

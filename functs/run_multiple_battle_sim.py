@@ -19,10 +19,6 @@ def run_multiple_battle_sims(attacking_units, defending_units, num_of_simulation
         battle_history_attacking_df = pd.concat([df_attacking_rounds,battle_history_attacking_df], ignore_index=True).groupby(['Round', 'Units']).sum().reset_index()
         battle_history_defending_df = pd.concat([df_defending_rounds,battle_history_defending_df], ignore_index=True).groupby(['Round', 'Units']).sum().reset_index()
 
-        # battle_history_attacking_count[tuple(battle_history_attacking)] += 1
-        # print(battle_history_attacking_count)
-        # battle_history_defending_count[tuple(battle_history_defending.items())] += 1
-
         if outcome == "tie":
             ties += 1
             defender_remaining_units_count[tuple(remaining_defending_units.items())] += 1

@@ -1,33 +1,45 @@
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import pandas as pd
+import plotly.express as px
+import plotly.io as pio
+from collections import defaultdict
 
-def plot_round_results(df, filename_prefix):
-    # print("THIS IS THE DATAFRAME THAT IS PASSED INTO THE FUNCTION")
-    # print(df)
-    round_df = pd.DataFrame()
-    # print("THIS IS THE FRESH ROUND_DF")
-    # print(round_df)
+def plot_round_results(df, filename_prefix, num_simulations):
     rounds = df['Round'].unique()
-    # print("THIS IS THE # OF ROUNDS")
-    # print(rounds)
+    plot_htmls = defaultdict(list)
 
     for round_num in rounds:
-        filename = str(f"{filename_prefix}_{round_num}.png")
+        filename = str(f"{filename_prefix}_{round_num}.html")
         round_df = df[df['Round'] == round_num]
-        #round_df = round_df.sort_values(by='Count', ascending=False)
-        # print(f"THIS IS THE DATAFRAME FOR ROUND {round_num}")
-        # print(round_df)
 
 
-        plt.figure(figsize=(10, 6))
-        sns.barplot(x='Count', y='Units', data=round_df, palette='muted', hue='Units', legend=False)
-        plt.title(f'Count by Units for Round {round_num}')
-        plt.xticks(rotation=90)
-        plt.tight_layout()
+        round_df['Percentage'] = (round_df['Count'] / num_simulations) * 100  # Convert to percentage
 
-        # Save the figure
-        plt.savefig(filename)
-        plt.close()
+        fig = px.bar(
+            round_df,
+            x='Percentage',
+            y='Units',
+            orientation='h',
+            title=f'Count by Units for Round {round_num}',
+            text='Percentage',
+            color='Units',
+            color_discrete_sequence=['#F4A460']  # Set bar color
+        )
+
+        fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
+        fig.update_layout(
+            yaxis=dict(autorange="reversed"),
+            showlegend=False,
+            plot_bgcolor='#4e4e4d',
+            paper_bgcolor='#4e4e4d',
+            font=dict(color='white')
+        )
+        fig.update_xaxes(range=[0, 100])  # Ensure x-axis goes to 100%
+
+        # Save the figure as an HTML file
+        pio.write_html(fig, file=filename, full_html=False, include_plotlyjs='cdn')
+
+        # Collect the HTML content
+        plot_htmls[round_num].append(pio.to_html(fig, full_html=False, include_plotlyjs='cdn'))
+
+    return plot_htmls
 
