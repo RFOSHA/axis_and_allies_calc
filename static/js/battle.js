@@ -113,10 +113,26 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => console.error('Error fetching units:', error));
     }
 
+    function quickSimulate() {
+        const formData = new FormData(document.getElementById("battle-form"));
+        fetch("/quick_simulate", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("results-content-attacker").innerHTML = `<p>Attacker Wins: ${data.attacker_win_count}</p>`;
+            document.getElementById("results-content-defender").innerHTML = `<p>Defender Wins: ${data.defender_win_count}</p>`;
+            document.getElementById("results-content-ties").innerHTML = `<p>Ties: ${data.ties}</p>`;
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
     document.getElementById("clear-form-btn").addEventListener("click", clearForm);
     document.getElementById("save-battle-btn").addEventListener("click", saveBattle);
     document.getElementById("swap-values-btn").addEventListener("click", swapValues);
     document.getElementById("show-units-btn").addEventListener("click", showUnits);
+    document.getElementById("quick-sim-btn").addEventListener("click", quickSimulate);
     document.getElementById("battle-type").addEventListener("change", updateVisibleUnits);
 
     var savedBattles = JSON.parse(localStorage.getItem('savedBattles')) || {};
