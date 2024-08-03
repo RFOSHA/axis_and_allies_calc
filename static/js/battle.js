@@ -91,9 +91,32 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    function showUnits() {
+        fetch('static/units.json')
+            .then(response => response.json())
+            .then(units => {
+                var modalContent = document.getElementById('units-modal-content');
+                modalContent.innerHTML = '';
+
+                for (var unit in units) {
+                    if (units.hasOwnProperty(unit)) {
+                        var unitData = units[unit];
+                        var unitInfo = document.createElement('p');
+                        unitInfo.textContent = `${unit}: Attack: ${unitData.attack}, Defense: ${unitData.defense}, IPC: ${unitData.ipc}`;
+                        modalContent.appendChild(unitInfo);
+                    }
+                }
+
+                var modal = new bootstrap.Modal(document.getElementById('units-modal'));
+                modal.show();
+            })
+            .catch(error => console.error('Error fetching units:', error));
+    }
+
     document.getElementById("clear-form-btn").addEventListener("click", clearForm);
     document.getElementById("save-battle-btn").addEventListener("click", saveBattle);
     document.getElementById("swap-values-btn").addEventListener("click", swapValues);
+    document.getElementById("show-units-btn").addEventListener("click", showUnits);
     document.getElementById("battle-type").addEventListener("change", updateVisibleUnits);
 
     var savedBattles = JSON.parse(localStorage.getItem('savedBattles')) || {};

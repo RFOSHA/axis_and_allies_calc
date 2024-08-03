@@ -5,16 +5,19 @@ body {
 
 .content-wrapper {
     background-color: #696969; /* Dim Gray for secondary backgrounds */
-    /* padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); */
 }
 
 title {
-    color: #eb872f; /* Sandy Brown for headings */
+    color: #323522; /* Teal for title to make it stand out */
 }
 
-h1, h2, h3 {
+h1 {
+    color: #212121; /* Sandy Brown for headings */
+    margin-bottom: 20px;
+    font-weight: bold; /* Bold text for title */
+}
+
+h2, h3 {
     color: #F4A460; /* Sandy Brown for headings */
     margin-bottom: 20px;
 }
@@ -51,7 +54,7 @@ label {
 
 .btn-primary:focus, .btn-secondary:focus, .btn-success:focus, .btn-warning:focus,
 .btn-primary:active, .btn-secondary:active, .btn-success:active, .btn-warning:active {
-    background-color: #6B8E23 !important; /* Steel Blue for button focus/active */
+    background-color: #6B8E23 !important; /* Olive Drab for button focus/active */
     border-color: #4e4e4d !important; /* Dark Slate Gray for button focus/active border */
     color: #e2e2e2 !important; /* Dark Slate Gray for button text */
 }
@@ -59,7 +62,7 @@ label {
 .list-group-item {
     background-color: #696969; /* Dim Gray for list items */
     color: #F4A460; /* Sandy Brown for list item text */
-    border-color: #4e4e4d;  Olive Drab for list item borders */
+    border-color: #4e4e4d; /* Olive Drab for list item borders */
     transition: background-color 0.3s ease;
 }
 
@@ -82,4 +85,46 @@ label {
 }
 .button-group button {
     margin-left: 10px !important;
+}
+
+/* Modal Styles */
+.modal-content {
+    background-color: #494949; /* Dark Slate Gray for modal background */
+    color: #F4A460; /* Sandy Brown for modal text */
+    border: 1px solid #4e4e4d; /* Olive Drab for modal border */
+}
+
+.modal-header, .modal-footer {
+    border-color: #4e4e4d; /* Olive Drab for modal header/footer border */
+}
+
+.modal-header .close {
+    color: #F4A460; /* Sandy Brown for close button */
+}
+
+.modal-header .close span {
+    color: #F4A460; /* Sandy Brown for close button span */
+}
+
+.modal-body {
+    background-color: #494949; /* Dark Slate Gray for modal body */
+    color: #F4A460; /* Sandy Brown for modal body text */
+}
+
+.modal-footer .btn-secondary {
+    background-color: #4e4e4d; /* Sandy Brown for secondary button */
+    border-color: #4e4e4d; /* Olive Drab for button border */
+    color: #F4A460; /* Dark Slate Gray for button text */
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #6B8E23; /* Olive Drab for button hover */
+    border-color: #4e4e4d !important; /* Olive Drab for button borders */
+    color: #e2e2e2 !important; /* Dark Slate Gray for button text */
+}
+
+.modal-footer .btn-secondary:focus, .modal-footer .btn-secondary:active {
+    background-color: #6B8E23 !important; /* Olive Drab for button focus/active */
+    border-color: #4e4e4d !important; /* Dark Slate Gray for button focus/active border */
+    color: #e2e2e2 !important; /* Dark Slate Gray for button text */
 }
