@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/styles.css" rel="stylesheet">
-    <title>Battle Simulation</title>
+    <title>Axis and Allies Global 1942 Battle Simulation</title>
     <style>
         .button-group {
             display: flex;
@@ -18,7 +18,7 @@
 </head>
 <body>
     <div class="container-fluid mt-5 mx-auto content-wrapper">
-        <h1 class="text-center">Battle Simulation</h1>
+        <h1 class="text-center">Axis and Allies Global 1942 Battle Simulation</h1>
         <form id="battle-form" action="/simulate" method="post">
             <div class="row">
                 <div class="col-md-5">
@@ -71,22 +71,27 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Simulate Battle</button>
+                            <button type="submit" class="btn btn-secondary btn-block">Simulate Battle</button>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-12">
-                            <button type="button" id="clear-form-btn" class="btn btn-primary btn-block">Clear Form</button>
+                            <button type="button" id="clear-form-btn" class="btn btn-secondary btn-block">Clear Form</button>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-12">
-                            <button type="button" id="save-battle-btn" class="btn btn-primary btn-block">Save Battle</button>
+                            <button type="button" id="save-battle-btn" class="btn btn-secondary btn-block">Save Battle</button>
                         </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-12">
-                            <button type="button" id="swap-values-btn" class="btn btn-primary btn-block">Swap Values</button>
+                            <button type="button" id="swap-values-btn" class="btn btn-secondary btn-block">Swap Values</button>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <button type="button" id="show-units-btn" class="btn btn-secondary btn-block">Show Unit Values</button>
                         </div>
                     </div>
                 </div>
@@ -98,7 +103,7 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <strong>{{ battle_name }}</strong>
                                     <div class="button-group">
-                                        <button type="button" class="btn btn-sm btn-primary load-battle-btn" data-battle-name="{{ battle_name }}">Load</button>
+                                        <button type="button" class="btn btn-sm btn-secondary load-battle-btn" data-battle-name="{{ battle_name }}">Load</button>
                                         <button type="button" class="btn btn-sm btn-danger delete-battle-btn" data-battle-name="{{ battle_name }}">Delete</button>
                                     </div>
                                 </li>
@@ -109,6 +114,30 @@
             </div>
         </form>
     </div>
+
+    <!-- Units Modal -->
+    <div class="modal fade" id="units-modal" tabindex="-1" aria-labelledby="units-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="units-modal-label">Units Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="units-modal-content">
+                    <!-- Units information will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/static/js/battle.js"></script>
     <script>
         // Ensure units data is available for JavaScript
