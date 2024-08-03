@@ -52,6 +52,22 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <div id="simulation-results" class="mt-5">
+                        <h2 class="text-center">Quick Simulation Results</h2>
+                        <div id="results-content">
+                            <div class="row">
+                                <div id="results-content-ties" class="col-3 text-center">
+                                    <p>Ties: {{ ties }}</p>
+                                </div>
+                                <div id="results-content-attacker" class="col-4 text-center">
+                                    <p>Attacker Wins: {{ attacker_win_count }}</p>
+                                </div>
+                                <div id="results-content-defender" class="col-4 text-center">
+                                    <p>Defender Wins: {{ defender_win_count }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-3">
                     <h2>Simulation Settings</h2>
@@ -68,6 +84,11 @@
                     <div class="form-group mt-4">
                         <label for="number_of_simulations">Number of Simulations:</label>
                         <input type="number" class="form-control" id="number_of_simulations" name="number_of_simulations" min="1" value="{{ form_data.get('number_of_simulations', 1000) }}">
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button type="button" id="quick-sim-btn" class="btn btn-secondary btn-block">Quick Sim</button>
+                        </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-12">
@@ -113,6 +134,7 @@
                 </div>
             </div>
         </form>
+
     </div>
 
     <!-- Units Modal -->
