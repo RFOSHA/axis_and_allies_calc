@@ -109,8 +109,6 @@ async def quick_simulate(request: Request,
     attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count, battle_history_attacking_df, battle_history_defending_df = run_multiple_battle_sims(
         attacking_units, defending_units, number_of_simulations)
 
-    print(attacker_win_count, defender_win_count, ties)
-
     return JSONResponse({
         "attacker_win_count": attacker_win_count,
         "defender_win_count": defender_win_count,

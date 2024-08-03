@@ -82,10 +82,18 @@ def run_battle_simulation(attacking_units, defending_units):
 
         attacking_units = {key: value for key, value in attacking_units.items() if key not in ["Cruiser", "Battleship"]}
 
+    # Setting battleship capital hits for sea battles only
+    if num_attacking_land_units == 0 and num_attacking_naval_units > 0:
+        attacking_battleship_hits = attacking_units['Battleship']
+        defending_battleship_hits = defending_units['Battleship']
+    else:
+        attacking_battleship_hits = 0
+        defending_battleship_hits = 0
+
     #main battle module
     while sum(attacking_units.values()) > 0 and sum(defending_units.values()) > 0:
         battle_round += 1
-        attack_hits, defense_hits, attacking_units, defending_units = simulate_battle(attacking_units, defending_units)
+        attack_hits, defense_hits, attacking_units, defending_units, attacking_battleship_hits, defending_battleship_hits = simulate_battle(attacking_units, defending_units, attacking_battleship_hits, defending_battleship_hits)
 
         if battle_round == 1:
             defending_units = remove_hits(defending_units, naval_bomb_hits)

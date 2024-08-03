@@ -4,7 +4,6 @@ import plotly.io as pio
 from collections import defaultdict
 
 def plot_round_results(df, filename_prefix, num_simulations):
-    # print(df)
     rounds = df['Round'].unique()
     plot_htmls = defaultdict(list)
 
