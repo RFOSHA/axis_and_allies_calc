@@ -23,6 +23,7 @@ templates.env.filters['format_key'] = format_key
 
 @router.post("/simulate", response_class=HTMLResponse)
 async def simulate_battle_endpoint(request: Request,
+                                   battle_type: str = Form(...),
                                    attack_infantry: int = Form(0),
                                    attack_artillery: int = Form(0),
                                    attack_tank: int = Form(0),
@@ -31,7 +32,7 @@ async def simulate_battle_endpoint(request: Request,
                                    attack_submarine: int = Form(0),
                                    attack_destroyer: int = Form(0),
                                    attack_cruiser: int = Form(0),
-                                   attack_aircraft_carrier: int = Form(0),
+                                   attack_carrier: int = Form(0),
                                    attack_battleship: int = Form(0),
                                    attack_aa: int = Form(0),
                                    defense_infantry: int = Form(0),
@@ -42,7 +43,7 @@ async def simulate_battle_endpoint(request: Request,
                                    defense_submarine: int = Form(0),
                                    defense_destroyer: int = Form(0),
                                    defense_cruiser: int = Form(0),
-                                   defense_aircraft_carrier: int = Form(0),
+                                   defense_carrier: int = Form(0),
                                    defense_battleship: int = Form(0),
                                    defense_aa: int = Form(0),
                                    number_of_simulations: int = Form(1000)):
@@ -55,7 +56,7 @@ async def simulate_battle_endpoint(request: Request,
         "Submarine": attack_submarine,
         "Destroyer": attack_destroyer,
         "Cruiser": attack_cruiser,
-        "Aircraft Carrier": attack_aircraft_carrier,
+        "Carrier": attack_carrier,
         "Battleship": attack_battleship,
         "AA": attack_aa
     }
@@ -69,7 +70,7 @@ async def simulate_battle_endpoint(request: Request,
         "Submarine": defense_submarine,
         "Destroyer": defense_destroyer,
         "Cruiser": defense_cruiser,
-        "Aircraft Carrier": defense_aircraft_carrier,
+        "Carrier": defense_carrier,
         "Battleship": defense_battleship,
         "AA": defense_aa
     }
@@ -77,8 +78,12 @@ async def simulate_battle_endpoint(request: Request,
     initial_attacking_units = {unit: count for unit, count in attacking_units.items() if count > 0}
     initial_defending_units = {unit: count for unit, count in defending_units.items() if count > 0}
 
+    print("In Simulate.py passing variables to run multiple battle sims")
+    print(f"attacking_units {attacking_units}")
+    print(f"defending_units {defending_units}")
+
     attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count, battle_history_attacking_df, battle_history_defending_df = run_multiple_battle_sims(
-        attacking_units, defending_units, number_of_simulations)
+        attacking_units, defending_units, number_of_simulations, battle_type)
 
     # Filter out units with a quantity of 0
     filtered_attacker_remaining_units_count = {}
@@ -111,6 +116,7 @@ async def simulate_battle_endpoint(request: Request,
     defender_round_plots = plot_round_results(battle_history_defending_df, defender_rxr_plot_path, number_of_simulations)
 
     form_data = {
+        "battle_type": battle_type,
         "attack_infantry": attack_infantry,
         "attack_artillery": attack_artillery,
         "attack_tank": attack_tank,
@@ -119,7 +125,7 @@ async def simulate_battle_endpoint(request: Request,
         "attack_submarine": attack_submarine,
         "attack_destroyer": attack_destroyer,
         "attack_cruiser": attack_cruiser,
-        "attack_aircraft_carrier": attack_aircraft_carrier,
+        "attack_carrier": attack_carrier,
         "attack_battleship": attack_battleship,
         "attack_aa": attack_aa,
         "defense_infantry": defense_infantry,
@@ -130,7 +136,7 @@ async def simulate_battle_endpoint(request: Request,
         "defense_submarine": defense_submarine,
         "defense_destroyer": defense_destroyer,
         "defense_cruiser": defense_cruiser,
-        "defense_aircraft_carrier": defense_aircraft_carrier,
+        "defense_carrier": defense_carrier,
         "defense_battleship": defense_battleship,
         "defense_aa": defense_aa,
         "number_of_simulations": number_of_simulations

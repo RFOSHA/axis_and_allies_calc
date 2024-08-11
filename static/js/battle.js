@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const unitsByBattleType = {
             land: ['infantry', 'artillery', 'tank', 'fighter', 'bomber', 'aa'],
             amphibious: ['infantry', 'artillery', 'tank', 'fighter', 'bomber', 'cruiser', 'battleship', 'aa'],
-            sea: ['fighter', 'bomber', 'submarine', 'destroyer', 'cruiser', 'aircraft carrier', 'battleship']
+            sea: ['fighter', 'bomber', 'submarine', 'destroyer', 'cruiser', 'carrier', 'battleship']
         };
 
         const battleType = document.getElementById('battle-type').value;

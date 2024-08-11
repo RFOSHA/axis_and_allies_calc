@@ -33,7 +33,11 @@ def remove_zero_values_and_convert_to_string(input_dict):
     return result_string
 
 # Function to run the full battle simulation until one side has no units left
-def run_battle_simulation(attacking_units, defending_units):
+def run_battle_simulation(attacking_units, defending_units, battle_type):
+    print("In Run Battle Simulation")
+    print(f"attacking_units: {attacking_units}")
+    print(f"defending_units: {defending_units}")
+    print(f"battle_type: {battle_type}")
 
     #Store the round by round stats
     battle_history_attacking = []
@@ -69,9 +73,10 @@ def run_battle_simulation(attacking_units, defending_units):
     num_attack_cruiser = attacking_units.get("Cruiser", 0)
     num_attack_battleship = attacking_units.get("Battleship", 0)
     num_attacking_land_units = num_attack_infantry + num_attack_artillery + num_attack_tank
-    num_attacking_naval_units = num_attack_cruiser + num_attack_battleship
+    num_attacking_naval_bomb_units = num_attack_cruiser + num_attack_battleship
 
-    if num_attacking_land_units > 0 and num_attacking_naval_units > 0:
+
+    if num_attacking_land_units > 0 and num_attacking_naval_bomb_units > 0:
         bombardment_units = {key: value for key, value in attacking_units.items() if key in ["Cruiser", "Battleship"]}
         for unit, count in bombardment_units.items():
             for _ in range(count):
@@ -83,7 +88,7 @@ def run_battle_simulation(attacking_units, defending_units):
         attacking_units = {key: value for key, value in attacking_units.items() if key not in ["Cruiser", "Battleship"]}
 
     # Setting battleship capital hits for sea battles only
-    if num_attacking_land_units == 0 and num_attacking_naval_units > 0:
+    if num_attacking_land_units == 0 and num_attacking_naval_bomb_units > 0:
         attacking_battleship_hits = attacking_units['Battleship']
         defending_battleship_hits = defending_units['Battleship']
     else:
@@ -93,7 +98,8 @@ def run_battle_simulation(attacking_units, defending_units):
     #main battle module
     while sum(attacking_units.values()) > 0 and sum(defending_units.values()) > 0:
         battle_round += 1
-        attack_hits, defense_hits, attacking_units, defending_units, attacking_battleship_hits, defending_battleship_hits = simulate_battle(attacking_units, defending_units, attacking_battleship_hits, defending_battleship_hits)
+        print(f"Main battle module - round: {battle_round}")
+        attack_hits, defense_hits, attacking_units, defending_units, attacking_battleship_hits, defending_battleship_hits = simulate_battle(attacking_units, defending_units, attacking_battleship_hits, defending_battleship_hits, battle_type)
 
         if battle_round == 1:
             defending_units = remove_hits(defending_units, naval_bomb_hits)
@@ -108,6 +114,26 @@ def run_battle_simulation(attacking_units, defending_units):
         # Record the current state of the units
         battle_history_attacking.append({'Round': battle_round, 'Units': filtered_attacking_units, 'Count': 1, 'Value': attacking_units_cumulative_value})
         battle_history_defending.append({'Round': battle_round, 'Units': filtered_defending_units, 'Count': 1, 'Value': defending_units_cumulative_value})
+        print(f"Main battle module - battle_history_attacking: {battle_history_attacking}")
+        print(f"Main battle module - battle_history_defending: {battle_history_defending}")
+
+        # Assess if it is an sub on aircraft situation and if so then force a tie
+        num_attacking_subs = attacking_units.get("Submarine", 0)
+        num_defending_subs = defending_units.get("Submarine", 0)
+        num_attacking_aircraft = attacking_units.get("Fighter", 0) + attacking_units.get("Bomber", 0)
+        num_defending_aircraft = defending_units.get("Fighter", 0) + defending_units.get("Bomber", 0)
+        num_attacking_nonsub_ships = attacking_units.get("Destroyer", 0) + attacking_units.get("Cruiser",
+            0) + attacking_units.get("Carrier", 0) + attacking_units.get("Battleship", 0)
+        num_defending_nonsub_ships = defending_units.get("Destroyer", 0) + defending_units.get("Cruiser",
+            0) + defending_units.get("Carrier", 0) + defending_units.get("Battleship", 0)
+
+        if (num_defending_nonsub_ships == 0 and num_attacking_nonsub_ships == 0 and num_attacking_subs > 0 and num_defending_subs == 0 and num_defending_aircraft > 0) or \
+                (num_defending_nonsub_ships == 0 and num_attacking_nonsub_ships == 0 and num_defending_subs > 0 and num_attacking_subs == 0 and num_attacking_aircraft > 0):
+            print(f"ROUND: {battle_round}    TIE")
+            outcome = "tie"
+            df_attacking_rounds = pd.DataFrame(battle_history_attacking)
+            df_defending_rounds = pd.DataFrame(battle_history_defending)
+            return outcome, attacking_units, defending_units, df_attacking_rounds, df_defending_rounds
 
     df_attacking_rounds = pd.DataFrame(battle_history_attacking)
 

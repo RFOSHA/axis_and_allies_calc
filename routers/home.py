@@ -49,6 +49,7 @@ async def delete_battle(request: Request, name: str):
 
 @router.post("/quick_simulate", response_class=HTMLResponse)
 async def quick_simulate(request: Request,
+                         battle_type: str = Form(...),
                          attack_infantry: int = Form(0),
                          attack_artillery: int = Form(0),
                          attack_tank: int = Form(0),
@@ -57,7 +58,7 @@ async def quick_simulate(request: Request,
                          attack_submarine: int = Form(0),
                          attack_destroyer: int = Form(0),
                          attack_cruiser: int = Form(0),
-                         attack_aircraft_carrier: int = Form(0),
+                         attack_carrier: int = Form(0),
                          attack_battleship: int = Form(0),
                          attack_aa: int = Form(0),
                          defense_infantry: int = Form(0),
@@ -68,7 +69,7 @@ async def quick_simulate(request: Request,
                          defense_submarine: int = Form(0),
                          defense_destroyer: int = Form(0),
                          defense_cruiser: int = Form(0),
-                         defense_aircraft_carrier: int = Form(0),
+                         defense_carrier: int = Form(0),
                          defense_battleship: int = Form(0),
                          defense_aa: int = Form(0),
                          number_of_simulations: int = Form(1000)):
@@ -82,7 +83,7 @@ async def quick_simulate(request: Request,
         "Submarine": attack_submarine,
         "Destroyer": attack_destroyer,
         "Cruiser": attack_cruiser,
-        "Aircraft Carrier": attack_aircraft_carrier,
+        "Carrier": attack_carrier,
         "Battleship": attack_battleship,
         "AA": attack_aa
     }
@@ -96,18 +97,16 @@ async def quick_simulate(request: Request,
         "Submarine": defense_submarine,
         "Destroyer": defense_destroyer,
         "Cruiser": defense_cruiser,
-        "Aircraft Carrier": defense_aircraft_carrier,
+        "Carrier": defense_carrier,
         "Battleship": defense_battleship,
         "AA": defense_aa
     }
 
     form_data = dict(request.query_params)
     saved_battles = request.session.get("saved_battles", {})
-    # initial_attacking_units = {unit: count for unit, count in attacking_units.items() if count > 0}
-    # initial_defending_units = {unit: count for unit, count in defending_units.items() if count > 0}
 
     attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count, battle_history_attacking_df, battle_history_defending_df = run_multiple_battle_sims(
-        attacking_units, defending_units, number_of_simulations)
+        attacking_units, defending_units, number_of_simulations, battle_type)
 
     return JSONResponse({
         "attacker_win_count": attacker_win_count,

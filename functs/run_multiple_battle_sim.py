@@ -3,7 +3,7 @@ from collections import defaultdict
 import pandas as pd
 
 # Function to run multiple battle simulations and capture remaining units
-def run_multiple_battle_sims(attacking_units, defending_units, num_of_simulations):
+def run_multiple_battle_sims(attacking_units, defending_units, num_of_simulations, battle_type):
     attacker_win_count = 0
     defender_win_count = 0
     ties = 0
@@ -13,11 +13,21 @@ def run_multiple_battle_sims(attacking_units, defending_units, num_of_simulation
     battle_history_defending_df = pd.DataFrame()
 
     for _ in range(num_of_simulations):
+        print(f"Running battle simulation")
         outcome, remaining_attacking_units, remaining_defending_units, df_attacking_rounds, df_defending_rounds\
-            = run_battle_simulation(attacking_units.copy(), defending_units.copy())
+            = run_battle_simulation(attacking_units.copy(), defending_units.copy(), battle_type)
+
+        print(f"Exiting battle simulation")
+        print(f"Outcome: {outcome}")
+        print(f"remaining_attacking_units: {remaining_attacking_units}")
+        print(f"remaining_defending_units: {remaining_defending_units}")
+        print(f"df_attacking_rounds: {df_attacking_rounds}")
+        print(f"df_defending_rounds: {df_defending_rounds}")
 
         battle_history_attacking_df = pd.concat([df_attacking_rounds,battle_history_attacking_df], ignore_index=True).groupby(['Round', 'Units', 'Value']).sum().reset_index()
+        print(battle_history_attacking_df)
         battle_history_defending_df = pd.concat([df_defending_rounds,battle_history_defending_df], ignore_index=True).groupby(['Round', 'Units', 'Value']).sum().reset_index()
+        print(battle_history_attacking_df)
 
         if outcome == "tie":
             ties += 1
