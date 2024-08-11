@@ -75,9 +75,9 @@
                         <div class="col-md-12">
                             <label for="battle-type">Select Battle Type:</label>
                             <select class="form-control" id="battle-type" name="battle_type">
-                                <option value="land">Land Battle</option>
-                                <option value="amphibious">Amphibious Assault</option>
-                                <option value="sea">Sea Battle</option>
+                                <option value="land" {% if form_data.get('battle_type') == 'land' %}selected{% endif %}>Land Battle</option>
+                                <option value="amphibious" {% if form_data.get('battle_type') == 'amphibious' %}selected{% endif %}>Amphibious Assault</option>
+                                <option value="sea" {% if form_data.get('battle_type') == 'sea' %}selected{% endif %}>Sea Battle</option>
                             </select>
                         </div>
                     </div>
