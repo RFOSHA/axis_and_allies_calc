@@ -5,8 +5,8 @@ from functs.run_multiple_battle_sim import run_multiple_battle_sims
 from functs.plot_results import plot_results
 from functs.plot_round_results import plot_round_results
 import shutil
-from collections import defaultdict
 import os
+from functs.resolved_in_previous_round import resolved_in_previous_round
 
 templates = Jinja2Templates(directory="templates")
 
@@ -111,6 +111,12 @@ async def simulate_battle_endpoint(request: Request,
     defender_plot_html = plot_results(filtered_defender_remaining_units_count, "Defender Remaining Units Distribution")
     attacker_rxr_plot_path = "static/attacker_rxr/attacker_rxr_plot"
     defender_rxr_plot_path = "static/defender_rxr/defender_rxr_plot"
+
+    print("Battle history DF")
+    print(battle_history_attacking_df)
+
+    battle_history_attacking_df = resolved_in_previous_round(battle_history_attacking_df, number_of_simulations)
+    battle_history_defending_df = resolved_in_previous_round(battle_history_defending_df, number_of_simulations)
 
     attacker_round_plots = plot_round_results(battle_history_attacking_df, attacker_rxr_plot_path, number_of_simulations)
     defender_round_plots = plot_round_results(battle_history_defending_df, defender_rxr_plot_path, number_of_simulations)

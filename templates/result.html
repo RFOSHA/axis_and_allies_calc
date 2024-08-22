@@ -48,6 +48,7 @@
         <div class="row mt-5">
             <div class="col-md-6">
                 <h2>Attacker Round-by-Round Results</h2>
+                <p>RIPR - Resolved in Previous Round</p>
                 {% for round_num, plots in attacker_round_plots.items() %}
                     <div class="plot-container" id="attacker-round-plot-{{ round_num }}">
                         {{ plots|join("")|safe }}
@@ -56,6 +57,7 @@
             </div>
             <div class="col-md-6">
                 <h2>Defender Round-by-Round Results</h2>
+                <p>RIPR - Resolved in Previous Round</p>
                 {% for round_num, plots in defender_round_plots.items() %}
                     <div class="plot-container" id="defender-round-plot-{{ round_num }}">
                         {{ plots|join("")|safe }}

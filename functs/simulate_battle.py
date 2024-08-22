@@ -63,6 +63,8 @@ def simulate_battle(attacking_units, defending_units, attacking_battleship_hits,
                         attack_sub_hits += 1
                         attack_hits += 1
                         print(f"ROLLING SUB ATTACK - Attack Sub Hits: {attack_sub_hits}")
+                else:
+                    attack_hits += 1
 
                 print(f"ROLLING ATTACK - Total Attack Hits: {attack_hits}")
 
