@@ -3,6 +3,32 @@ body {
     color: #F4A460; /* Sandy Brown for text */
 }
 
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+    background-color: #494949 !important; /* Dark Slate Gray for navbar background */
+    color: #F4A460; /* Sandy Brown for text */
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light .navbar-nav .nav-link {
+    color: #F4A460; /* Sandy Brown for navbar links */
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light .navbar-nav .nav-link:hover {
+    color: #e2e2e2; /* Light color for navbar links on hover */
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light .navbar-brand {
+    color: #F4A460; /* Sandy Brown for brand text */
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light .navbar-brand:hover {
+    color: #e2e2e2; /* Light color for brand text on hover */
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light .navbar-toggler {
+    background-color: #F4A460; /* Sandy Brown for the toggler button */
+    border: none;
+}
+
 .content-wrapper {
     background-color: #696969; /* Dim Gray for secondary backgrounds */
 }
@@ -12,7 +38,7 @@ title {
 }
 
 h1 {
-    color: #212121; /* Sandy Brown for headings */
+    color: #e7e7e7; /* Sandy Brown for headings */
     margin-bottom: 20px;
     font-weight: bold; /* Bold text for title */
 }

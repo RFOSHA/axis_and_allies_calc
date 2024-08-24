@@ -121,9 +121,10 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("results-content-attacker").innerHTML = `<p>Attacker Wins: ${data.attacker_win_count}</p>`;
-            document.getElementById("results-content-defender").innerHTML = `<p>Defender Wins: ${data.defender_win_count}</p>`;
-            document.getElementById("results-content-ties").innerHTML = `<p>Ties: ${data.ties}</p>`;
+            console.log(data);
+            document.getElementById("results-content-attacker").innerHTML = `<p>Attacker Wins: ${data.attacker_win_percentage}</p>`;
+            document.getElementById("results-content-defender").innerHTML = `<p>Defender Wins: ${data.defender_win_percentage}</p>`;
+            document.getElementById("results-content-ties").innerHTML = `<p>Ties: ${data.tie_percentage}</p>`;
         })
         .catch(error => console.error("Error:", error));
     }

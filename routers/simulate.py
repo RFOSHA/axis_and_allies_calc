@@ -121,6 +121,10 @@ async def simulate_battle_endpoint(request: Request,
     attacker_round_plots = plot_round_results(battle_history_attacking_df, attacker_rxr_plot_path, number_of_simulations)
     defender_round_plots = plot_round_results(battle_history_defending_df, defender_rxr_plot_path, number_of_simulations)
 
+    attacker_win_percentage = (attacker_win_count / number_of_simulations) * 100
+    defender_win_percentage = (defender_win_count / number_of_simulations) * 100
+    tie_percentage = (ties / number_of_simulations) * 100
+
     form_data = {
         "battle_type": battle_type,
         "attack_infantry": attack_infantry,
@@ -151,8 +155,11 @@ async def simulate_battle_endpoint(request: Request,
     return templates.TemplateResponse("result.html", {
         "request": request,
         "attacker_win_count": attacker_win_count,
+        "attacker_win_percentage": attacker_win_percentage,
         "defender_win_count": defender_win_count,
+        "defender_win_percentage": defender_win_percentage,
         "ties": ties,
+        "tie_percentage": tie_percentage,
         "attacker_remaining_units_count": dict(filtered_attacker_remaining_units_count),
         "defender_remaining_units_count": dict(filtered_defender_remaining_units_count),
         "attacker_plot_html": attacker_plot_html,

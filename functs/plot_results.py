@@ -48,9 +48,9 @@ def plot_results(units_count, title):
     fig.update_layout(
         yaxis=dict(autorange="reversed"),
         showlegend=False,
-        #plot_bgcolor='#4e4e4d',
-        #paper_bgcolor='#4e4e4d',
-        #font=dict(color='white')
+        plot_bgcolor='#4e4e4d',
+        paper_bgcolor='#4e4e4d',
+        font=dict(color='#e7e7e7')
     )
     fig.update_xaxes(range=[0, 120])  # Ensure x-axis goes to 100%
 

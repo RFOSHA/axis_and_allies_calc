@@ -32,7 +32,7 @@ def plot_round_results(df, filename_prefix, num_simulations):
             showlegend=False,
             plot_bgcolor='#4e4e4d',
             paper_bgcolor='#4e4e4d',
-            font=dict(color='white')
+            font=dict(color='#e7e7e7')
         )
         fig.update_xaxes(range=[0, 100])  # Ensure x-axis goes to 100%
 

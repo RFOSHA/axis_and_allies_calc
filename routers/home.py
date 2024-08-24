@@ -24,6 +24,11 @@ class BattleData(BaseModel):
     name: str
     data: dict
 
+# New route for Battle Rules page
+@router.get("/battle-rules", response_class=HTMLResponse)
+async def get_battle_rules(request: Request):
+    return templates.TemplateResponse("battle_rules.html", {"request": request})
+
 @router.post("/save_battle")
 async def save_battle(request: Request, battle: BattleData):
     saved_battles = request.session.get("saved_battles", {})
@@ -108,8 +113,12 @@ async def quick_simulate(request: Request,
     attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count, battle_history_attacking_df, battle_history_defending_df = run_multiple_battle_sims(
         attacking_units, defending_units, number_of_simulations, battle_type)
 
+    attacker_win_percentage = (attacker_win_count / number_of_simulations) * 100
+    defender_win_percentage = (defender_win_count / number_of_simulations) * 100
+    tie_percentage = (ties / number_of_simulations) * 100
+
     return JSONResponse({
-        "attacker_win_count": attacker_win_count,
-        "defender_win_count": defender_win_count,
-        "ties": ties,
+        "attacker_win_percentage": attacker_win_percentage,
+        "defender_win_percentage": defender_win_percentage,
+        "tie_percentage": tie_percentage,
     })

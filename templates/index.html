@@ -17,8 +17,24 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Axis and Allies Global 1942 Battle Simulation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/battle-rules">Battle Rules</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container-fluid mt-5 mx-auto content-wrapper">
-        <h1 class="text-center">Axis and Allies Global 1942 Battle Simulation</h1>
+<!--        <h1 class="text-center">Axis and Allies Global 1942 Battle Simulation</h1>-->
         <form id="battle-form" action="/simulate" method="post">
             <div class="row">
                 <div class="col-md-5">
@@ -57,13 +73,13 @@
                         <div id="results-content">
                             <div class="row">
                                 <div id="results-content-ties" class="col-3 text-center">
-                                    <p>Ties: {{ ties }}</p>
+                                    <p>Ties: {{ tie_percentage }}%</p>
                                 </div>
                                 <div id="results-content-attacker" class="col-4 text-center">
-                                    <p>Attacker Wins: {{ attacker_win_count }}</p>
+                                    <p>Attacker Wins: {{ attacker_win_percentage }}%</p>
                                 </div>
                                 <div id="results-content-defender" class="col-4 text-center">
-                                    <p>Defender Wins: {{ defender_win_count }}</p>
+                                    <p>Defender Wins: {{ defender_win_percentage }}%</p>
                                 </div>
                             </div>
                         </div>

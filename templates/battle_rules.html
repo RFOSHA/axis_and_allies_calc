@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/styles.css" rel="stylesheet">
+    <title>Battle Rules</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Axis and Allies Global 1942 Battle Simulation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/battle-rules">Battle Rules</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Battle Rules</h1>
+        <p>Each unit gets a single dice roll per turn.</p>
+
+        <p>All attacking units roll, and the hits, a dice roll less than or equal to the unit's attack value, are totaled. This is the number of casualties the defending units will take.</p>
+
+        <p>Before the defender takes their casualties, they roll a die for each one of the defending units. A dice roll less than or equal to the unit's defense value is a hit and is totaled. This is the number of casualties that the attacking units will take.</p>
+
+        <p>After both sides roll, the casualties for both sides are removed from the attacking force. The next round of attacking and defending occurs with the new, smaller forces. This continues until one side is completely eliminated.</p>
+
+        <p>There are some special cases that modify the overall logic:</p>
+
+        <ol>
+            <li>For each attacking artillery unit, it increases the attack value of a single infantry unit by 1 to 2. For example, if there are 2 infantry and 2 artillery attacking, both infantry would attack at a 2 and not a 1.</li>
+            <br><li>Anti-Aircraft guns cannot attack and only get a single defending roll at the beginning of the first round. For each AA gun, the defender rolls one die for each attacking aircraft (fighter or bomber) up to 3 total die per AA gun. If the defender rolls a 1, then an aircraft is removed and will not be able to attack.</li>
+            <br><li>Destroyers must be present for aircraft to hit a submarine. If a submarine is attacking ships that do not have a defending destroyer, then any defending aircraft will not be able to hit the sub.</li>
+            <br><li>Battleships take two hits to destroy.</li>
+            <br><li>Attacking subs get a sneak attack. If a sub lands a hit on its initial roll and there is no defending destroyer, then the defender casualty is immediately removed and does not get a chance to defend. This is negated by the presence of a defending destroyer.</li>
+            <br><li>During an amphibious attack, cruisers and battleships get a one-shot naval bombardment that will add to the defender casualties in the first round.</li>
+            <br><li>Submarines cannot hit aircraft.</li>
+        </ol>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

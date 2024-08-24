@@ -4,19 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/styles.css" rel="stylesheet">
     <title>Battle Result</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Axis and Allies Global 1942 Battle Simulation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/battle-rules">Battle Rules</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container mt-5">
-        <h1 class="text-center">Battle Result</h1>
-        <p class="text-center">Number of attacker wins: {{ attacker_win_count }}</p>
-        <p class="text-center">Number of defender wins: {{ defender_win_count }}</p>
-        <p class="text-center">Number of ties: {{ ties }}</p>
-
+        <h1 class="text-center">Battle Results</h1>
+<!--        <p class="text-center">Number of attacker wins: {{ attacker_win_count }}</p>-->
+<!--        <p class="text-center">Number of defender wins: {{ defender_win_count }}</p>-->
+<!--        <p class="text-center">Number of ties: {{ ties }}</p>-->
+        <div class="row">
+            <div id="results-content-attacker" class="col-4 text-center">
+                <h5>Attacker Wins: {{ attacker_win_percentage }}%</h5>
+            </div>
+            <div id="results-content-defender" class="col-4 text-center">
+                <h5>Defender Wins: {{ defender_win_percentage }}%</h5>
+            </div>
+            <div id="results-content-ties" class="col-3 text-center">
+                <h5>Ties: {{ tie_percentage }}%</h5>
+            </div>
+        </div>
+<!--        <h4 class="text-center">Attacker win %: {{ attacker_win_percentage }}</h4>-->
+<!--        <h4 class="text-center">Defender win %: {{ defender_win_percentage }}</h4>-->
+<!--        <h4 class="text-center">Tie %: {{ tie_percentage }}</h4>-->
+        <br>
         <div class="row">
             <div class="col-md-6">
-                <h2>Attacker Remaining Units After Each Win</h2>
+                <h3>Attacker Remaining Units After Each Sim</h3>
                 <ul class="list-group">
 <!--                {% for units, count in attacker_remaining_units_count.items() %}-->
 <!--                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>-->
@@ -30,7 +61,7 @@
 <!--                {% endfor %}-->
             </div>
             <div class="col-md-6">
-                <h2>Defender Remaining Units After Each Win</h2>
+                <h3>Defender Remaining Units After Each Sim</h3>
                 <ul class="list-group">
 <!--                {% for units, count in defender_remaining_units_count.items() %}-->
 <!--                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>-->
@@ -47,7 +78,7 @@
 
         <div class="row mt-5">
             <div class="col-md-6">
-                <h2>Attacker Round-by-Round Results</h2>
+                <h3>Attacker Round-by-Round Results</h3>
                 <p>RIPR - Resolved in Previous Round</p>
                 {% for round_num, plots in attacker_round_plots.items() %}
                     <div class="plot-container" id="attacker-round-plot-{{ round_num }}">
@@ -56,7 +87,7 @@
                 {% endfor %}
             </div>
             <div class="col-md-6">
-                <h2>Defender Round-by-Round Results</h2>
+                <h3>Defender Round-by-Round Results</h3>
                 <p>RIPR - Resolved in Previous Round</p>
                 {% for round_num, plots in defender_round_plots.items() %}
                     <div class="plot-container" id="defender-round-plot-{{ round_num }}">
@@ -74,6 +105,8 @@
                 <button type="submit" class="btn btn-primary">Simulate Another Battle</button>
             </form>
         </div>
+        <br>
+        <br>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
