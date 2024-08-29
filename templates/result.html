@@ -27,9 +27,6 @@
     </nav>
     <div class="container mt-5">
         <h1 class="text-center">Battle Results</h1>
-<!--        <p class="text-center">Number of attacker wins: {{ attacker_win_count }}</p>-->
-<!--        <p class="text-center">Number of defender wins: {{ defender_win_count }}</p>-->
-<!--        <p class="text-center">Number of ties: {{ ties }}</p>-->
         <div class="row">
             <div id="results-content-attacker" class="col-4 text-center">
                 <h5>Attacker Wins: {{ attacker_win_percentage }}%</h5>
@@ -41,38 +38,23 @@
                 <h5>Ties: {{ tie_percentage }}%</h5>
             </div>
         </div>
-<!--        <h4 class="text-center">Attacker win %: {{ attacker_win_percentage }}</h4>-->
-<!--        <h4 class="text-center">Defender win %: {{ defender_win_percentage }}</h4>-->
-<!--        <h4 class="text-center">Tie %: {{ tie_percentage }}</h4>-->
         <br>
         <div class="row">
             <div class="col-md-6">
                 <h3>Attacker Remaining Units After Each Sim</h3>
                 <ul class="list-group">
-<!--                {% for units, count in attacker_remaining_units_count.items() %}-->
-<!--                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>-->
-<!--                {% endfor %}-->
                 </ul>
                 <div class="plot-container">
                     {{ attacker_plot_html | safe }}
                 </div>
-<!--                {% for image_path in attacker_rxr_images %}-->
-<!--                    <img src="{{ image_path }}" alt="Attacker Image" class="img-fluid mt-3">-->
-<!--                {% endfor %}-->
             </div>
             <div class="col-md-6">
                 <h3>Defender Remaining Units After Each Sim</h3>
                 <ul class="list-group">
-<!--                {% for units, count in defender_remaining_units_count.items() %}-->
-<!--                    <li class="list-group-item">{{ units | format_key }}: {{ count }}</li>-->
-<!--                {% endfor %}-->
                 </ul>
                 <div class="plot-container">
                     {{ defender_plot_html | safe }}
                 </div>
-<!--                {% for image_path in defender_rxr_images %}-->
-<!--                    <img src="{{ image_path }}" alt="Defender Image" class="img-fluid mt-3">-->
-<!--                {% endfor %}-->
             </div>
         </div>
 

@@ -14,12 +14,14 @@ templates = Jinja2Templates(directory="templates")
 
 router = APIRouter()
 
+#Path for index (home) page
 @router.get("/", response_class=HTMLResponse)
 async def read_form(request: Request):
     form_data = dict(request.query_params)
     saved_battles = request.session.get("saved_battles", {})
     return templates.TemplateResponse("index.html", {"request": request, "units": units, "form_data": form_data, "saved_battles": saved_battles})
 
+# Create an object to store saved battle configurations
 class BattleData(BaseModel):
     name: str
     data: dict
@@ -29,6 +31,7 @@ class BattleData(BaseModel):
 async def get_battle_rules(request: Request):
     return templates.TemplateResponse("battle_rules.html", {"request": request})
 
+# Route to save a battle configuration to local storage to be retrieved later
 @router.post("/save_battle")
 async def save_battle(request: Request, battle: BattleData):
     saved_battles = request.session.get("saved_battles", {})
@@ -36,12 +39,14 @@ async def save_battle(request: Request, battle: BattleData):
     request.session["saved_battles"] = saved_battles
     return JSONResponse(status_code=200, content={"message": "Battle saved successfully"})
 
+# Route to retrieve a previously saved battle
 @router.get("/load_battle")
 async def load_battle(request: Request, name: str):
     saved_battles = request.session.get("saved_battles", {})
     battle_data = saved_battles.get(name, {})
     return JSONResponse(status_code=200, content=battle_data)
 
+# Route to delete a previously saved battle
 @router.delete("/delete_battle")
 async def delete_battle(request: Request, name: str):
     saved_battles = request.session.get("saved_battles", {})
@@ -52,6 +57,7 @@ async def delete_battle(request: Request, name: str):
     else:
         return JSONResponse(status_code=404, content={"message": "Battle not found"})
 
+# Route to do a quick simulation that keeps the user on the index.html page
 @router.post("/quick_simulate", response_class=HTMLResponse)
 async def quick_simulate(request: Request,
                          battle_type: str = Form(...),
@@ -77,8 +83,9 @@ async def quick_simulate(request: Request,
                          defense_carrier: int = Form(0),
                          defense_battleship: int = Form(0),
                          defense_aa: int = Form(0),
-                         number_of_simulations: int = Form(1000)):
+                         number_of_simulations: int = Form(100)):
 
+# Create the attacking units dictionary from form inputs
     attacking_units = {
         "Infantry": attack_infantry,
         "Artillery": attack_artillery,
@@ -93,6 +100,7 @@ async def quick_simulate(request: Request,
         "AA": attack_aa
     }
 
+# Create the defending units dictionary from form inputs
     defending_units = {
         "Infantry": defense_infantry,
         "Artillery": defense_artillery,
@@ -107,16 +115,16 @@ async def quick_simulate(request: Request,
         "AA": defense_aa
     }
 
-    form_data = dict(request.query_params)
-    saved_battles = request.session.get("saved_battles", {})
-
+    # Running the battle simulations and storing results
     attacker_win_count, defender_win_count, ties, attacker_remaining_units_count, defender_remaining_units_count, battle_history_attacking_df, battle_history_defending_df = run_multiple_battle_sims(
         attacking_units, defending_units, number_of_simulations, battle_type)
 
-    attacker_win_percentage = (attacker_win_count / number_of_simulations) * 100
-    defender_win_percentage = (defender_win_count / number_of_simulations) * 100
-    tie_percentage = (ties / number_of_simulations) * 100
+    # Calculate win percentage to display at the top of the results page and convert to string to add the % for the JS injection
+    attacker_win_percentage = str(round((attacker_win_count / number_of_simulations) * 100, 2)) + "%"
+    defender_win_percentage = str(round((defender_win_count / number_of_simulations) * 100, 2)) + "%"
+    tie_percentage = str(round((ties / number_of_simulations) * 100, 2)) + "%"
 
+    # Return data for the JS to use to inject updated HTML
     return JSONResponse({
         "attacker_win_percentage": attacker_win_percentage,
         "defender_win_percentage": defender_win_percentage,

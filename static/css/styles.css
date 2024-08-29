@@ -43,6 +43,10 @@ h1 {
     font-weight: bold; /* Bold text for title */
 }
 
+h5 {
+    color: #e7e7e7; /* Sandy Brown for headings */
+}
+
 h2, h3 {
     color: #F4A460; /* Sandy Brown for headings */
     margin-bottom: 20px;
@@ -153,4 +157,13 @@ label {
     background-color: #6B8E23 !important; /* Olive Drab for button focus/active */
     border-color: #4e4e4d !important; /* Dark Slate Gray for button focus/active border */
     color: #e2e2e2 !important; /* Dark Slate Gray for button text */
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-group button {
+    margin-left: 10px;
 }
