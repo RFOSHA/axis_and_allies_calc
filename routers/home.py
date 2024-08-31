@@ -120,9 +120,9 @@ async def quick_simulate(request: Request,
         attacking_units, defending_units, number_of_simulations, battle_type)
 
     # Calculate win percentage to display at the top of the results page and convert to string to add the % for the JS injection
-    attacker_win_percentage = str(round((attacker_win_count / number_of_simulations) * 100, 2)) + "%"
-    defender_win_percentage = str(round((defender_win_count / number_of_simulations) * 100, 2)) + "%"
-    tie_percentage = str(round((ties / number_of_simulations) * 100, 2)) + "%"
+    attacker_win_percentage = round((attacker_win_count / number_of_simulations) * 100, 2)
+    defender_win_percentage = round((defender_win_count / number_of_simulations) * 100, 2)
+    tie_percentage = round((ties / number_of_simulations) * 100, 2)
 
     # Return data for the JS to use to inject updated HTML
     return JSONResponse({

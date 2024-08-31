@@ -1,3 +1,2 @@
-/templates/index2.html
-/static/attacker_rxr/*
-/static/defender_rxr/*
+attacker_rxr_plot_*
+defender_rxr_plot_*
